@@ -1,0 +1,171 @@
+{
+  "product": "GCP Yt Rebalance",
+  "developer": "Bruno Albertini",
+  "source_sha256": "549dfd14e76d4d23a15c1ecad11f1b6af29494170fe6482ee8a690ebe3b98f53",
+  "files": [
+    {
+      "file": "gcp-yt-rebalance-icon.png",
+      "bytes": 1533415,
+      "sha256": "549dfd14e76d4d23a15c1ecad11f1b6af29494170fe6482ee8a690ebe3b98f53",
+      "format": "PNG",
+      "dimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "gcp-yt-rebalance.icns",
+      "bytes": 1598056,
+      "sha256": "90c67d349c849fe2612df51b432cb4b828f791de8bd0568b89abba898350132b",
+      "format": "ICNS",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "sizes": [
+        [
+          512,
+          512,
+          2
+        ],
+        [
+          512,
+          512,
+          1
+        ],
+        [
+          256,
+          256,
+          2
+        ],
+        [
+          256,
+          256,
+          1
+        ],
+        [
+          128,
+          128,
+          2
+        ],
+        [
+          128,
+          128,
+          1
+        ],
+        [
+          32,
+          32,
+          2
+        ],
+        [
+          16,
+          16,
+          2
+        ]
+      ]
+    },
+    {
+      "file": "gcp-yt-rebalance.ico",
+      "bytes": 106198,
+      "sha256": "23c3c7889ece565c631ba47260c72abf98a0b9c1db4020813fa86eee1449510f",
+      "format": "ICO",
+      "dimensions": [
+        256,
+        256
+      ],
+      "sizes": [
+        [
+          16,
+          16
+        ],
+        [
+          32,
+          32
+        ],
+        [
+          64,
+          64
+        ],
+        [
+          128,
+          128
+        ],
+        [
+          256,
+          256
+        ]
+      ]
+    },
+    {
+      "file": "icon-128.png",
+      "bytes": 22886,
+      "sha256": "16154f47d7ed7b67ed10e64c54c33211fd467a8d912832b3b97d61d8ddd187a4",
+      "format": "PNG",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "file": "icon-16.png",
+      "bytes": 751,
+      "sha256": "9b3db758c809db295521c75c7bbedecc7e63960410631e38f10e41309505d9ff",
+      "format": "PNG",
+      "dimensions": [
+        16,
+        16
+      ]
+    },
+    {
+      "file": "icon-256.png",
+      "bytes": 72672,
+      "sha256": "2dfcc2955d65acf495b8ae81c679cafdf436c834fd5c3bfbe43342af407dc510",
+      "format": "PNG",
+      "dimensions": [
+        256,
+        256
+      ]
+    },
+    {
+      "file": "icon-32.png",
+      "bytes": 2362,
+      "sha256": "0bf574424e4b5a5e3f690f6dfd493a90a2582f787c32f004a631efdeb38f7932",
+      "format": "PNG",
+      "dimensions": [
+        32,
+        32
+      ]
+    },
+    {
+      "file": "icon-512.png",
+      "bytes": 258879,
+      "sha256": "76b6448e77192a1be76479869840324981d3d5b8981510e85ece44f1bcc68837",
+      "format": "PNG",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "file": "icon-64.png",
+      "bytes": 7441,
+      "sha256": "064c8d1963ccb2b08cfea5086ace20794f62758f790488f0f44c02e5fbf1da59",
+      "format": "PNG",
+      "dimensions": [
+        64,
+        64
+      ]
+    },
+    {
+      "file": "preview.png",
+      "bytes": 392413,
+      "sha256": "85a05aa165cee5f24cb030032193677001987603cc1379905247228ee4dbfaf2",
+      "format": "PNG",
+      "dimensions": [
+        900,
+        880
+      ]
+    }
+  ]
+}

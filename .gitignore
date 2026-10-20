@@ -1,0 +1,14 @@
+.venv*/
+.cache/
+__pycache__/
+*.pyc
+target/
+node_modules/
+artifacts/
+models/weights/
+tests/fixtures/audio/
+vendor/
+build/
+dist/
+.tools/
+

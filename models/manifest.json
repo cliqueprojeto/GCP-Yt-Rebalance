@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "product": "GCP Yt Rebalance",
+  "release_approved": false,
+  "models": [],
+  "required_per_model": ["upstream", "revision", "license", "redistribution_evidence", "sha256", "bytes", "sources", "sample_rate", "runtime", "validation_report"]
+}

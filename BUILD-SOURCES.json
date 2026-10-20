@@ -1,0 +1,421 @@
+{
+  "product": "GCP Yt Rebalance",
+  "kind": "source-only, not an installer",
+  "files": [
+    {
+      "path": ".github/workflows/desktop-installers.yml",
+      "bytes": 9446,
+      "sha256": "65a323475d3e3c72b045777fa2883e96b761cddb02e9eda3e7928a8ab31f2fe9"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 136,
+      "sha256": "1993725118d7fad8fbfea09369e45b9f15b1a21547e9901b7fa07a9698e1f814"
+    },
+    {
+      "path": "apps/desktop/download.py",
+      "bytes": 13740,
+      "sha256": "ae72984ba132a016ba46662a742a84d714713da0c7520f4124997a85a36daa16"
+    },
+    {
+      "path": "apps/desktop/engine.py",
+      "bytes": 15480,
+      "sha256": "846bad822e39d9bf5fb99d882293a7b20c2db7d7499e04cd90eff93162704933"
+    },
+    {
+      "path": "apps/desktop/gui.py",
+      "bytes": 42296,
+      "sha256": "6e53b7848f945cd19abf57d9d701490beb13ce74661e55f86e0fc820c9d9d8f5"
+    },
+    {
+      "path": "apps/desktop/main.py",
+      "bytes": 7230,
+      "sha256": "976e26aa1f148eedd6176a359098fad60a116edfcc6852fc343b71994d6c02b2"
+    },
+    {
+      "path": "apps/desktop/naming.py",
+      "bytes": 1324,
+      "sha256": "3e825060d627b281b084d63fd6b7aeec01e57145eda1a3ac242e54d5ee28aa68"
+    },
+    {
+      "path": "apps/desktop/native.spec",
+      "bytes": 1907,
+      "sha256": "7b1b920463d822184e915b7c54613ffa6e70b07da1678c4afc6320b6ca18f6b2"
+    },
+    {
+      "path": "apps/desktop/platform_support.py",
+      "bytes": 1061,
+      "sha256": "9569036503e151a21493ef896995a8afaf0150cd4cac7d541799c56cb6c06bb1"
+    },
+    {
+      "path": "apps/desktop/preferences.py",
+      "bytes": 870,
+      "sha256": "b7f7f3f98eaa04f6e42eeb09618fa0702dff203ae9cbfa654b4b43ea21814812"
+    },
+    {
+      "path": "apps/desktop/process_job.py",
+      "bytes": 2964,
+      "sha256": "48a4348c05a563ea11a8c3dcc4f30db905c6f6deb0a10b9757ebc18c57ef87d6"
+    },
+    {
+      "path": "apps/desktop/runtime.py",
+      "bytes": 781,
+      "sha256": "6549b9131a963e5b3cbd04df5a4a2ef2c8527d5d9515995f4a16ec7a1804c8d4"
+    },
+    {
+      "path": "apps/desktop/ui_icons.py",
+      "bytes": 1822,
+      "sha256": "5eaba2ce88cc21cb963b214e308fd7e9a5ea4f814111a1182f18bdd4b4ea98bf"
+    },
+    {
+      "path": "apps/desktop/windows-version.txt",
+      "bytes": 725,
+      "sha256": "4e10247ebd1043ddc04416ae2f77b335d9fde0f48d8e114e82ae395c071a888d"
+    },
+    {
+      "path": "apps/desktop/windows.spec",
+      "bytes": 1688,
+      "sha256": "b8a2d55f4853628abc84666bf7c36164749b1d9f475433a1377eec13a0ff7dad"
+    },
+    {
+      "path": "assets/branding/gcp-yt-rebalance-icon.png",
+      "bytes": 1533415,
+      "sha256": "549dfd14e76d4d23a15c1ecad11f1b6af29494170fe6482ee8a690ebe3b98f53"
+    },
+    {
+      "path": "assets/branding/gcp-yt-rebalance.icns",
+      "bytes": 1598056,
+      "sha256": "90c67d349c849fe2612df51b432cb4b828f791de8bd0568b89abba898350132b"
+    },
+    {
+      "path": "assets/branding/gcp-yt-rebalance.ico",
+      "bytes": 106198,
+      "sha256": "23c3c7889ece565c631ba47260c72abf98a0b9c1db4020813fa86eee1449510f"
+    },
+    {
+      "path": "assets/branding/icon-128.png",
+      "bytes": 22886,
+      "sha256": "16154f47d7ed7b67ed10e64c54c33211fd467a8d912832b3b97d61d8ddd187a4"
+    },
+    {
+      "path": "assets/branding/icon-16.png",
+      "bytes": 751,
+      "sha256": "9b3db758c809db295521c75c7bbedecc7e63960410631e38f10e41309505d9ff"
+    },
+    {
+      "path": "assets/branding/icon-256.png",
+      "bytes": 72672,
+      "sha256": "2dfcc2955d65acf495b8ae81c679cafdf436c834fd5c3bfbe43342af407dc510"
+    },
+    {
+      "path": "assets/branding/icon-32.png",
+      "bytes": 2362,
+      "sha256": "0bf574424e4b5a5e3f690f6dfd493a90a2582f787c32f004a631efdeb38f7932"
+    },
+    {
+      "path": "assets/branding/icon-512.png",
+      "bytes": 258879,
+      "sha256": "76b6448e77192a1be76479869840324981d3d5b8981510e85ece44f1bcc68837"
+    },
+    {
+      "path": "assets/branding/icon-64.png",
+      "bytes": 7441,
+      "sha256": "064c8d1963ccb2b08cfea5086ace20794f62758f790488f0f44c02e5fbf1da59"
+    },
+    {
+      "path": "assets/branding/manifest.json",
+      "bytes": 3437,
+      "sha256": "1d54b3bc6a7e53fdccfb9ba0ef20a77a0ca61eb929afdd602981dc05a29c14c7"
+    },
+    {
+      "path": "assets/branding/preview.png",
+      "bytes": 392413,
+      "sha256": "85a05aa165cee5f24cb030032193677001987603cc1379905247228ee4dbfaf2"
+    },
+    {
+      "path": "assets/branding/README.md",
+      "bytes": 1499,
+      "sha256": "f96b7ef110e1b33b754401d77385f9e8294ecd7fa36ad5bb3bcf136cd597667b"
+    },
+    {
+      "path": "assets/branding/taskbar-128.png",
+      "bytes": 6742,
+      "sha256": "d1a8126b0ca8a66c91c49cc7279d3ab538de5cc259d570cb7088ca5a5587e140"
+    },
+    {
+      "path": "assets/branding/taskbar-16.png",
+      "bytes": 787,
+      "sha256": "518d78febf0314a137924a131bc74f60ee8fcc4fafb0cddc9088e506423cc7f4"
+    },
+    {
+      "path": "assets/branding/taskbar-256.png",
+      "bytes": 11914,
+      "sha256": "165990493042b5749142c36c5633919eba23f36f48fb1027abc2651e0aef375f"
+    },
+    {
+      "path": "assets/branding/taskbar-32.png",
+      "bytes": 1710,
+      "sha256": "8d01f856fbf94e41ae37c0dcfe3512d47e7ac6fbb84852cffe4c731d4c85e901"
+    },
+    {
+      "path": "assets/branding/taskbar-512.png",
+      "bytes": 4761,
+      "sha256": "d8c2e7b01036fb3e24240963287915859c1e9523fd06f37b7cdeb9897f3f6e80"
+    },
+    {
+      "path": "assets/branding/taskbar-64.png",
+      "bytes": 3539,
+      "sha256": "33b4c2a08751b93ffb171d25241bdbd000e1bcd6bb41b8ccb907c9f29fa348a5"
+    },
+    {
+      "path": "assets/branding/taskbar.icns",
+      "bytes": 73754,
+      "sha256": "2c908070388bf4966fd7d2b5fd3f74404ca760abb9595fcacc634112b5cef124"
+    },
+    {
+      "path": "assets/branding/taskbar.ico",
+      "bytes": 27447,
+      "sha256": "5b3a63a7ae98a59ac1e14017f5a8e34541158820e6654de0f92809975f088d95"
+    },
+    {
+      "path": "docs/adr/0001-motor-condicionado-a-poc.md",
+      "bytes": 710,
+      "sha256": "637810333865e29658765eff18646f1886355332f56e34f099b09696b3b29e8a"
+    },
+    {
+      "path": "docs/adr/0002-prototipo-windows-autocontido.md",
+      "bytes": 1507,
+      "sha256": "028fe28e92e451643b153afb717b53fdbc6c482fb6c24d053ce0868e5ef80b8f"
+    },
+    {
+      "path": "docs/adr/0003-interface-e-instalador-windows.md",
+      "bytes": 2351,
+      "sha256": "0eccefd6d068a8c824263fbe1fd48d9025afda6b3a8c3d4a5421706b6476f556"
+    },
+    {
+      "path": "docs/arquitetura.md",
+      "bytes": 3557,
+      "sha256": "cc679a814a23c026b383562245cd8bb34a2c51b66af0708ea655c5788e4e75bb"
+    },
+    {
+      "path": "docs/build-multiplataforma.md",
+      "bytes": 8127,
+      "sha256": "3189972d3c6946db5fb38b38cb239740ef690dbbbb44d748b9678d63033c365d"
+    },
+    {
+      "path": "docs/diagnostico.md",
+      "bytes": 2860,
+      "sha256": "84dfd5cba6b2f61e2e4f460c22c72e1f6c0bb61dbfb81200bec7b4795801add1"
+    },
+    {
+      "path": "docs/evidence/downloader-components.json",
+      "bytes": 287,
+      "sha256": "be67f0edc9d1591689bdf8f8e36e7a185cbad30d8b991ba76546a50d19384a64"
+    },
+    {
+      "path": "docs/evidence/model-acquisition.json",
+      "bytes": 553,
+      "sha256": "a860e91465bc6a8aadde3c4362de6fce3a90f2042c3487795ae40683f08e223c"
+    },
+    {
+      "path": "docs/poc.md",
+      "bytes": 6368,
+      "sha256": "98eec6cf7c3543e88a6942907c0267b2d150e337d5923020ed1daa204012d2cd"
+    },
+    {
+      "path": "docs/relatorio-fases-0-1.md",
+      "bytes": 8676,
+      "sha256": "81b372b2afd3e0bf740ce76d73f74f554ef08ca1007d35d92e149bec64f15712"
+    },
+    {
+      "path": "docs/teste-windows-v02.md",
+      "bytes": 5692,
+      "sha256": "7bea5bd2769bac1c9fd56ece963c56b4b4898ceebb3513f64cdb6b906fed16a5"
+    },
+    {
+      "path": "docs/teste-windows-v03.md",
+      "bytes": 7471,
+      "sha256": "8fc5c740cbb70b25673d6b5fdfcdfd71cd292cf8d1e13433a2facaf3513e17c5"
+    },
+    {
+      "path": "docs/teste-windows.md",
+      "bytes": 5754,
+      "sha256": "d2f7d225447f7df148281a2cf46d033d8db8f933c59f9ec81edf952dd4b7667f"
+    },
+    {
+      "path": "models/manifest.json",
+      "bytes": 269,
+      "sha256": "f62dc0ff4db707c247a0767bb0d7ba96025afa707e49346d4c1abc0f54056cc6"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2121,
+      "sha256": "c8fb058dfe933a4461dbe285b00ef6eff1191afb40edacd0662511c14f1aaf80"
+    },
+    {
+      "path": "scripts/acquire_poc.py",
+      "bytes": 4574,
+      "sha256": "6c726e3e908c73e4b0ec8210fff3a578ab53a929933ae05b5baf60bf0b309c62"
+    },
+    {
+      "path": "scripts/audio_metrics.py",
+      "bytes": 1101,
+      "sha256": "d5af2c97b78fe20b31d92d94da081c9372dcb78192d602bd8f6c6ddcc9cc3d34"
+    },
+    {
+      "path": "scripts/branding.py",
+      "bytes": 2799,
+      "sha256": "c4acdd4836a22a2409f20d88e812dfee8f0cd7a332a57cdcf9e6f00f747d2e05"
+    },
+    {
+      "path": "scripts/export_build_sources.py",
+      "bytes": 2302,
+      "sha256": "7d69022949faabbcbb922c73d33ff39e845570d0990778979da9ceb265f140f7"
+    },
+    {
+      "path": "scripts/finalize_windows.py",
+      "bytes": 3400,
+      "sha256": "da1fc24231989a0da7deace3b2985cf67cf80158f7c0833f16c3555874a4b7fd"
+    },
+    {
+      "path": "scripts/finalize_windows_v02.py",
+      "bytes": 3572,
+      "sha256": "033263f7eaef8807c6b272acef0e18a58aa9a92281fa09feb47147bd943d6112"
+    },
+    {
+      "path": "scripts/finalize_windows_v03.py",
+      "bytes": 2726,
+      "sha256": "de2357064aa640eb7ff96132233d24cf7601a38ab386dfea8166422e5c5977c9"
+    },
+    {
+      "path": "scripts/generate_signal.py",
+      "bytes": 978,
+      "sha256": "0f7f8e4a46d80873ad5fc42b845087c0f50df8c9e9df4a6cf5d809a95ccc54e0"
+    },
+    {
+      "path": "scripts/hash_installers.py",
+      "bytes": 477,
+      "sha256": "dee4af8948045ef4b4e8b678ab4b6c670bc2724c149d7c98e37529a2869c537d"
+    },
+    {
+      "path": "scripts/lock_poc.py",
+      "bytes": 1294,
+      "sha256": "77f2dd9dc14021ac530b22f3454c660c14061b60ef708a69473b794e44253e94"
+    },
+    {
+      "path": "scripts/native-sources.lock.json",
+      "bytes": 1476,
+      "sha256": "1cd9e48d46789019218dcd13f7272533fbe507b3dd693d6085870385b2a4136f"
+    },
+    {
+      "path": "scripts/native_contract.py",
+      "bytes": 4615,
+      "sha256": "d99a9c2b5840cbf145b155052e4d8cd19688a40765fab278942c59118ae499ac"
+    },
+    {
+      "path": "scripts/package_native.py",
+      "bytes": 4430,
+      "sha256": "677d551a3f7365c160834055318e70c15a4de583a228f7e31e3844710c48b5ec"
+    },
+    {
+      "path": "scripts/poc_environment.py",
+      "bytes": 1180,
+      "sha256": "6892996959682ba0f6d50788cfd6fb4d8219e4a62113e2862e20fc516d212625"
+    },
+    {
+      "path": "scripts/poc_exports.py",
+      "bytes": 4170,
+      "sha256": "058c4a86456295e4248f1c089699470357bd360d8f53f578e231b153dda575ca"
+    },
+    {
+      "path": "scripts/poc_onnx.py",
+      "bytes": 2978,
+      "sha256": "acbc374dd5d567d9d67c30edc7eb693207e9d1ae9af2ed511ece1848bb24fc37"
+    },
+    {
+      "path": "scripts/poc_reference.py",
+      "bytes": 5301,
+      "sha256": "01d62b474921220879fda3c177a24b312c67d462ebb4116f739f8b18f625d5fa"
+    },
+    {
+      "path": "scripts/prepare_ci.py",
+      "bytes": 8570,
+      "sha256": "7137382e45b9949952dc4c1719585bd7003f4db3b89760ddafd47521a09f84a3"
+    },
+    {
+      "path": "scripts/prepare_windows_package.py",
+      "bytes": 3301,
+      "sha256": "6d4826af92b37e1bf4d81f493f0e36dd3e0f57029c11b46c2d9101125f24d455"
+    },
+    {
+      "path": "scripts/requirements-desktop-native.txt",
+      "bytes": 750,
+      "sha256": "5cebba07ed6b992665068a93664af17337dfa02a0edecffcd243e912da696479"
+    },
+    {
+      "path": "scripts/requirements-poc-windows-x64.lock",
+      "bytes": 4810,
+      "sha256": "e08457b87afa5c33fce778c10a93915aa791f84a2079829837ac8412b1564545"
+    },
+    {
+      "path": "scripts/smoke_dmg.py",
+      "bytes": 1835,
+      "sha256": "52a3afaf1a0f4279ad56623a12255b8850d7815fea522b6b70034c036cb7aa00"
+    },
+    {
+      "path": "scripts/smoke_downloads.py",
+      "bytes": 4594,
+      "sha256": "e9d056636a1c4879b52d24386dda4421f1cee0e2b2cd20864512785331f0327f"
+    },
+    {
+      "path": "scripts/smoke_installer.py",
+      "bytes": 3870,
+      "sha256": "e4702ad2482198391f29e2a972200c480453f0140075d0f9372d766928d8f264"
+    },
+    {
+      "path": "scripts/smoke_subtitles.py",
+      "bytes": 4366,
+      "sha256": "26e853fce8b4bcec23ea7685b5a03ca3ad3a62ac124779fd1e07fd96267217de"
+    },
+    {
+      "path": "scripts/smoke_windows.py",
+      "bytes": 7261,
+      "sha256": "22394048b202b967650cedcfc3feb57f8951e764590ec13e1cfb4f2a2acb8698"
+    },
+    {
+      "path": "scripts/taskbar_icon.py",
+      "bytes": 947,
+      "sha256": "b79509b5a2f03453683963760da29223e8f55c83b523f3a760169c90b4ef013c"
+    },
+    {
+      "path": "scripts/windows-installer.nsi",
+      "bytes": 5477,
+      "sha256": "b6176e5609f468d349f17f981f06757a2b8d44a4056f4bb878de06ab2140516e"
+    },
+    {
+      "path": "tests/test_desktop_contracts.py",
+      "bytes": 2063,
+      "sha256": "8ec58e9ed73fc893f079aa4b0d4a5a28d06eee03d087cfbc920964841ed0c4e9"
+    },
+    {
+      "path": "tests/test_metrics.py",
+      "bytes": 991,
+      "sha256": "7b858184474616bf7af6dcccae6e31d466e139f500a67eb79bd8094efca780e8"
+    },
+    {
+      "path": "tests/test_native_packaging.py",
+      "bytes": 2274,
+      "sha256": "5817729430670c3e0259f4f380f7541ed6bae2aa9df57bdaf060a5602f6f5c6d"
+    },
+    {
+      "path": "tests/test_v02.py",
+      "bytes": 2336,
+      "sha256": "c77be1de3af70f909659c90e8627c7eec4d0702bb767dbac4dc4a912a3ac07cb"
+    },
+    {
+      "path": "tests/test_v03.py",
+      "bytes": 2735,
+      "sha256": "7c0b1c8e69ccea897f2ca200d227ac70757fc4cb5a1f3032c623e813b836375e"
+    }
+  ]
+}

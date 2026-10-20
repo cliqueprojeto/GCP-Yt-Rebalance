@@ -1,0 +1,10 @@
+{
+  "repository": "adefossez/HTDemucs",
+  "revision": "cbc8a9b1a87023b7fd74e7b3412e6321c0eab003",
+  "url": "https://huggingface.co/adefossez/HTDemucs/resolve/cbc8a9b1a87023b7fd74e7b3412e6321c0eab003/955717e8.safetensors",
+  "upstream_sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd",
+  "redistribution_approved": false,
+  "license_status": "Card sem licença explícita; distribuição pendente de confirmação",
+  "bytes": 84025440,
+  "sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd"
+}
