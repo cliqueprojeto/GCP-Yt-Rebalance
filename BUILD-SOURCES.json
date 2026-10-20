@@ -3,6 +3,11 @@
   "kind": "source-only, not an installer",
   "files": [
     {
+      "path": ".gitattributes",
+      "bytes": 59,
+      "sha256": "fffb37e18880bd7672f6baf5f5e3ac38f0d4375e7967dec8abbc554d0750c6c8"
+    },
+    {
       "path": ".github/workflows/desktop-installers.yml",
       "bytes": 10131,
       "sha256": "1e7758e9134ef1c873d70dbc06b78d62ade77d93d4ac41c72d4329d8937fe70e"
@@ -69,8 +74,8 @@
     },
     {
       "path": "apps/desktop/windows-version.txt",
-      "bytes": 725,
-      "sha256": "4e10247ebd1043ddc04416ae2f77b335d9fde0f48d8e114e82ae395c071a888d"
+      "bytes": 712,
+      "sha256": "5b456b33bfe521b1c45f1152ce2d65a8871e57b132029ead7d5e8e2e63ceee3d"
     },
     {
       "path": "apps/desktop/windows.spec",
@@ -124,8 +129,8 @@
     },
     {
       "path": "assets/branding/manifest.json",
-      "bytes": 3437,
-      "sha256": "1d54b3bc6a7e53fdccfb9ba0ef20a77a0ca61eb929afdd602981dc05a29c14c7"
+      "bytes": 3266,
+      "sha256": "2fb3e5d2efb91900f2794c39be15aa34e1c79bc9932c5f9b46a10f838dd89425"
     },
     {
       "path": "assets/branding/preview.png",
@@ -193,14 +198,19 @@
       "sha256": "0eccefd6d068a8c824263fbe1fd48d9025afda6b3a8c3d4a5421706b6476f556"
     },
     {
+      "path": "docs/adr/0004-sidecar-universal-macos.md",
+      "bytes": 2047,
+      "sha256": "729d207256018b385c0ffe48e7786ea4a54ed12c52f8ab1854e6a8ae4eca3fca"
+    },
+    {
       "path": "docs/arquitetura.md",
       "bytes": 3557,
       "sha256": "cc679a814a23c026b383562245cd8bb34a2c51b66af0708ea655c5788e4e75bb"
     },
     {
       "path": "docs/build-multiplataforma.md",
-      "bytes": 8332,
-      "sha256": "b584a48e2b6b9e6e72a65ab92155356fabb5c29289277435d5ac2c965aed82f9"
+      "bytes": 9513,
+      "sha256": "038ed2abf6703d8284e2c33a897940f3c85b5f238c47ae2e52cdf94ab2968509"
     },
     {
       "path": "docs/diagnostico.md",
@@ -209,13 +219,18 @@
     },
     {
       "path": "docs/evidence/downloader-components.json",
-      "bytes": 287,
-      "sha256": "be67f0edc9d1591689bdf8f8e36e7a185cbad30d8b991ba76546a50d19384a64"
+      "bytes": 277,
+      "sha256": "37dd675850ea7bf40791fee5d274e0a7e07c98d81d6d449220ce025ab9f70842"
     },
     {
       "path": "docs/evidence/model-acquisition.json",
-      "bytes": 553,
-      "sha256": "a860e91465bc6a8aadde3c4362de6fce3a90f2042c3487795ae40683f08e223c"
+      "bytes": 543,
+      "sha256": "9378dd47ced0cfae3f541c88e8535490c93c71d18f9ae0db627771e0ff902975"
+    },
+    {
+      "path": "docs/evidence/native-v03-2026-10-20.json",
+      "bytes": 3572,
+      "sha256": "b57c8e0c683919a07232581473181988136e565645232908dd96dae1d4d819aa"
     },
     {
       "path": "docs/poc.md",
@@ -229,8 +244,8 @@
     },
     {
       "path": "docs/teste-macos-linux-v03.md",
-      "bytes": 3092,
-      "sha256": "2870734eabfab9b8d5338202a491e524dd66fcc7b4ee69243add16645dc52043"
+      "bytes": 5873,
+      "sha256": "cbb4e55f5c31ab74df9599a64088b606b010f0fc8b76a4a24b091fa60292514e"
     },
     {
       "path": "docs/teste-windows-v02.md",
@@ -239,8 +254,8 @@
     },
     {
       "path": "docs/teste-windows-v03.md",
-      "bytes": 7471,
-      "sha256": "8fc5c740cbb70b25673d6b5fdfcdfd71cd292cf8d1e13433a2facaf3513e17c5"
+      "bytes": 7411,
+      "sha256": "f5e31e86629914913c509f7882a1d1f18d7232b5fde811fe88f70225bb9adcca"
     },
     {
       "path": "docs/teste-windows.md",
@@ -254,8 +269,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2121,
-      "sha256": "c8fb058dfe933a4461dbe285b00ef6eff1191afb40edacd0662511c14f1aaf80"
+      "bytes": 2358,
+      "sha256": "f9c4a5c7487c2558719ba57abf363c4b6fa18aeffb63cd5039d7c4c6c100faca"
     },
     {
       "path": "scripts/acquire_poc.py",
@@ -274,8 +289,8 @@
     },
     {
       "path": "scripts/export_build_sources.py",
-      "bytes": 2302,
-      "sha256": "7d69022949faabbcbb922c73d33ff39e845570d0990778979da9ceb265f140f7"
+      "bytes": 2723,
+      "sha256": "87e9504cea444ed0cedd1cf7f90007c26e6777aff6023145c6b731e156c6ad35"
     },
     {
       "path": "scripts/finalize_windows.py",
@@ -314,8 +329,8 @@
     },
     {
       "path": "scripts/native-sources.lock.json",
-      "bytes": 1476,
-      "sha256": "1cd9e48d46789019218dcd13f7272533fbe507b3dd693d6085870385b2a4136f"
+      "bytes": 1448,
+      "sha256": "0a0f7b1214bd4de45d51114db4a8a8d22b94d9a63083907369df06c2a4e02a6b"
     },
     {
       "path": "scripts/native_contract.py",
@@ -354,8 +369,8 @@
     },
     {
       "path": "scripts/prepare_windows_package.py",
-      "bytes": 3301,
-      "sha256": "6d4826af92b37e1bf4d81f493f0e36dd3e0f57029c11b46c2d9101125f24d455"
+      "bytes": 3255,
+      "sha256": "01368ad09eb55752bf152c8b35ab1482413aa9022e5fe7d678f1e830b6796214"
     },
     {
       "path": "scripts/requirements-desktop-native.txt",
@@ -364,8 +379,8 @@
     },
     {
       "path": "scripts/requirements-poc-windows-x64.lock",
-      "bytes": 4810,
-      "sha256": "e08457b87afa5c33fce778c10a93915aa791f84a2079829837ac8412b1564545"
+      "bytes": 4760,
+      "sha256": "ef2126754d967fbd376629f4ab59d1e1fc78ae9b105e7221ada4ad7fcec65f3d"
     },
     {
       "path": "scripts/smoke_dmg.py",
@@ -374,13 +389,13 @@
     },
     {
       "path": "scripts/smoke_downloads.py",
-      "bytes": 4594,
-      "sha256": "e9d056636a1c4879b52d24386dda4421f1cee0e2b2cd20864512785331f0327f"
+      "bytes": 4521,
+      "sha256": "2a822daa47d4de54cb4d8cbb8cd06f73cdf38dedcb74785adcad1b45b3562a59"
     },
     {
       "path": "scripts/smoke_installer.py",
-      "bytes": 3870,
-      "sha256": "e4702ad2482198391f29e2a972200c480453f0140075d0f9372d766928d8f264"
+      "bytes": 3790,
+      "sha256": "2ccd840ef3df1903c73a113dd8363b338ca02d74d9565d009dee1df83d424fc1"
     },
     {
       "path": "scripts/smoke_subtitles.py",
@@ -389,8 +404,8 @@
     },
     {
       "path": "scripts/smoke_windows.py",
-      "bytes": 7261,
-      "sha256": "22394048b202b967650cedcfc3feb57f8951e764590ec13e1cfb4f2a2acb8698"
+      "bytes": 7118,
+      "sha256": "3e84d3a58ad1c5372a0fff277d5b85c43d06c18244631328475269dd68b2efe0"
     },
     {
       "path": "scripts/taskbar_icon.py",
@@ -399,8 +414,8 @@
     },
     {
       "path": "scripts/windows-installer.nsi",
-      "bytes": 5477,
-      "sha256": "b6176e5609f468d349f17f981f06757a2b8d44a4056f4bb878de06ab2140516e"
+      "bytes": 5351,
+      "sha256": "b0a5c15e6af20f3cc7d822e98ce24a67a9edab78491d3e3abca2ef9a5aa8b0b6"
     },
     {
       "path": "tests/test_desktop_contracts.py",

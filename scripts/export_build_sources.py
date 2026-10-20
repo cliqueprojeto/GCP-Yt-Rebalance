@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
-    files={ROOT/"README.md",ROOT/".gitignore"}
+    files={ROOT/"README.md",ROOT/".gitignore",ROOT/".gitattributes"}
     for folder in ("apps","scripts","tests",".github","models"):
         for path in (ROOT/folder).rglob("*"):
             if path.is_file() and path.suffix in (".py",".spec",".txt",".lock",".json",".nsi",".yml",".yaml",".md") and "__pycache__" not in path.parts and "weights" not in path.parts and "audio" not in path.parts:
@@ -17,7 +17,7 @@ def main():
         if path.is_file() and path.suffix.lower() in (".png",".ico",".icns",".json",".md"): files.add(path)
     files.update((ROOT/"docs").glob("*.md"))
     files.update((ROOT/"docs/adr").glob("*.md"))
-    for name in ("model-acquisition.json","downloader-components.json"):
+    for name in ("model-acquisition.json","downloader-components.json","native-v03-2026-10-20.json"):
         path=ROOT/"docs/evidence"/name
         if path.is_file(): files.add(path)
     manifest=[]
@@ -27,6 +27,10 @@ def main():
         for path in sorted(files):
             relative=path.relative_to(ROOT).as_posix()
             content=path.read_bytes()
+            # O manifesto deve coincidir com o checkout Git, também no Windows.
+            # Preserva UTF-8/BOM; normaliza somente CRLF dos arquivos de texto.
+            if path.suffix.lower() in (".py",".spec",".txt",".lock",".json",".nsi",".yml",".yaml",".md") or path.name in (".gitignore",".gitattributes"):
+                content=content.replace(b"\r\n",b"\n")
             manifest.append(dict(path=relative,bytes=len(content),sha256=hashlib.sha256(content).hexdigest()))
             archive.writestr(relative,content)
         archive.writestr("BUILD-SOURCES.json",json.dumps(dict(product="GCP Yt Rebalance",kind="source-only, not an installer",files=manifest),ensure_ascii=False,indent=2))

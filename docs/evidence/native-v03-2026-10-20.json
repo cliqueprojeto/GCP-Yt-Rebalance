@@ -1,0 +1,120 @@
+{
+  "product": "GCP Yt Rebalance",
+  "version": "0.3.0",
+  "date": "2026-10-20",
+  "private_repository": "cliqueprojeto/GCP-Yt-Rebalance",
+  "public_release": false,
+  "fixture": "0.4 second own synthetic signal, not a musical quality benchmark",
+  "targets": [
+    {
+      "target": "macos-arm64",
+      "run_id": 39408624618,
+      "package": {
+        "file": "GCP Yt Rebalance-0.3.0-macOS-arm64.dmg",
+        "version": "0.3.0",
+        "bytes": 334337237,
+        "sha256": "d5532a97c5101c08aea3d16e3c3c1650fbe00df2117348bb1b128ac6ebb5730f",
+        "host": "macOS-15.7.9-arm64-arm-64bit",
+        "architecture": "arm64",
+        "payload_bytes": 643465089,
+        "architecture_verified": true,
+        "model_verified": true,
+        "installation_tested": true,
+        "signed": false,
+        "clean_vm_tested": false,
+        "public_release": false,
+        "installed_payload_verified": true
+      },
+      "downloaded_hash_verified": true,
+      "tests": {
+        "v03-final-offline": "passed",
+        "v03-final-downloads": "passed",
+        "v03-final-subtitles": "passed"
+      }
+    },
+    {
+      "target": "linux-amd64",
+      "run_id": 39410186466,
+      "package": {
+        "file": "gcp-yt-rebalance_0.3.0_amd64.deb",
+        "version": "0.3.0",
+        "bytes": 357186302,
+        "sha256": "443518f3d56ff929f0cbe4d2d3b6402fce40f100bd94a0cf27cdd09a03d71dcc",
+        "host": "Linux-6.8.0-1070-azure-x86_64-with-glibc2.35",
+        "architecture": "x86_64",
+        "payload_bytes": 1133969170,
+        "architecture_verified": true,
+        "model_verified": true,
+        "installation_tested": true,
+        "signed": false,
+        "clean_vm_tested": false,
+        "public_release": false,
+        "installed_payload_verified": true
+      },
+      "downloaded_hash_verified": true,
+      "tests": {
+        "v03-final-offline": "passed",
+        "v03-final-downloads": "passed",
+        "v03-final-subtitles": "passed"
+      }
+    },
+    {
+      "target": "macos-intel",
+      "run_id": 39411413799,
+      "package": {
+        "file": "GCP Yt Rebalance-0.3.0-macOS-x86_64.dmg",
+        "version": "0.3.0",
+        "bytes": 447586928,
+        "sha256": "08c97bde35defe8102ac7319e245ce3a082f484b2f47e26755d926208cc36f20",
+        "host": "macOS-15.7.9-x86_64-i386-64bit",
+        "architecture": "x86_64",
+        "payload_bytes": 995254538,
+        "architecture_verified": true,
+        "model_verified": true,
+        "installation_tested": true,
+        "signed": false,
+        "clean_vm_tested": false,
+        "public_release": false,
+        "installed_payload_verified": true
+      },
+      "downloaded_hash_verified": true,
+      "tests": {
+        "v03-final-offline": "passed",
+        "v03-final-downloads": "passed",
+        "v03-final-subtitles": "passed"
+      }
+    }
+  ],
+  "linux_containers": [
+    {
+      "name": "linux-install (debian:12)",
+      "status": "success"
+    },
+    {
+      "name": "linux-install (debian:13)",
+      "status": "success"
+    },
+    {
+      "name": "linux-install (ubuntu:22.04)",
+      "status": "success"
+    },
+    {
+      "name": "linux-install (ubuntu:24.04)",
+      "status": "success"
+    }
+  ],
+  "pending": [
+    "physical M1 and Intel user installation",
+    "Linux Mint VM",
+    "Developer ID and notarization",
+    "musical quality benchmarks",
+    "RAM and CPU peaks",
+    "public distribution approval"
+  ],
+  "status": "three_native_test_installers_generated_and_verified",
+  "macos_downloader_probe": {
+    "original": 0,
+    "thin_x86_64": 255,
+    "preserved_signed": 0
+  }
+}

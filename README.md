@@ -3,9 +3,9 @@
 Desenvolvido por Bruno Albertini  
 [Gestão Cultural Pro](https://gestaoculturalpro.com.br)
 
-Aplicativo desktop planejado para importação, download autorizado, conversão e separação local de áudio. Idioma inicial: pt-BR. Sem conta, assinatura ou processamento em nuvem.
+Aplicativo desktop experimental para importação, download autorizado, conversão e separação local de áudio. Idioma inicial: pt-BR. Sem conta, assinatura ou processamento em nuvem.
 
-**Estado: Windows 0.3.0 experimental para teste local. O motor ainda não foi aprovado na matriz musical da POC. Os builds macOS/Linux estão preparados em pipeline e ainda não foram executados.**
+**Estado: instaladores 0.3.0 reais para teste privado em Windows x64, macOS Intel, macOS ARM64 e Linux amd64 DEB. Os testes nativos de instalação e funcionamento passaram nos runners; o motor ainda não foi aprovado na matriz musical da POC. Mac sem Developer ID/notarização, e testes físicos Intel/M1 e Linux Mint pendentes.**
 
 A versão 0.3 unifica logo e ícone, inicia WAV em 16 bits, carrega idiomas de legendas, salva padrões de qualidade e permite restaurar as configurações de fábrica. Mantém downloads, separação CPU, conversões, fila, estimativa, histórico e rolagem. Instalador completo: `dist/GCP Yt Rebalance Setup 0.3.0.exe`. [Instruções e testes 0.3](docs/teste-windows-v03.md). [Pipeline e pendências Mac/Linux](docs/build-multiplataforma.md). As versões anteriores foram preservadas em `dist/`. Player A/B e GPU ainda não estão implementados.
 
@@ -14,6 +14,7 @@ A versão 0.3 unifica logo e ícone, inicia WAV em 16 bits, carrega idiomas de l
 - [Protocolo e matriz da POC](docs/poc.md)
 - [Identidade visual](assets/branding/README.md)
 - [Resultados e pendências das Fases 0–1](docs/relatorio-fases-0-1.md)
+- [Instaladores Mac/Linux: testes, tamanhos, hashes e instruções](docs/teste-macos-linux-v03.md)
 
 ## Ferramentas executáveis desta etapa
 
