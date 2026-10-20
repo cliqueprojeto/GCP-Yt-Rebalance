@@ -2,6 +2,11 @@ name: Instaladores internos — GCP Yt Rebalance
 on:
   workflow_dispatch:
     inputs:
+      target:
+        description: Alvo a gerar (permite repetir apenas o build corrigido)
+        type: choice
+        default: all
+        options: [all, macos-intel, macos-apple-silicon, linux-amd64]
       include_windows:
         description: Regerar também Windows (desativado para economizar minutos ao gerar Mac/Linux)
         type: boolean
@@ -23,12 +28,15 @@ jobs:
         env:
           PRIVATE_REPOSITORY: ${{ github.event.repository.private }}
           INCLUDE_WINDOWS: ${{ inputs.include_windows }}
+          BUILD_TARGET: ${{ inputs.target }}
         shell: bash
         run: |
           test "$PRIVATE_REPOSITORY" = "true"
           python3 - <<'PY'
           import json, os
           targets=[dict(runner='macos-15-intel',id='macos-intel',arch='x64'),dict(runner='macos-15',id='macos-apple-silicon',arch='arm64'),dict(runner='ubuntu-22.04',id='linux-amd64',arch='x64')]
+          if os.environ['BUILD_TARGET']!='all': targets=[target for target in targets if target['id']==os.environ['BUILD_TARGET']]
+          if not targets: raise ValueError('Alvo de build inválido')
           if os.environ['INCLUDE_WINDOWS']=='true': targets.append(dict(runner='windows-2022',id='windows-x64',arch='x64'))
           with open(os.environ['GITHUB_OUTPUT'],'a') as output: output.write('value='+json.dumps(targets)+'\n')
           PY
@@ -149,7 +157,7 @@ jobs:
             build/**/warn-*.txt
   linux-install:
     needs: build
-    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    if: ${{ !cancelled() && needs.build.result == 'success' && (inputs.target == 'all' || inputs.target == 'linux-amd64') }}
     strategy:
       fail-fast: false
       matrix:

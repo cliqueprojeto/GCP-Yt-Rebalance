@@ -4,8 +4,8 @@
   "files": [
     {
       "path": ".github/workflows/desktop-installers.yml",
-      "bytes": 9446,
-      "sha256": "65a323475d3e3c72b045777fa2883e96b761cddb02e9eda3e7928a8ab31f2fe9"
+      "bytes": 9957,
+      "sha256": "3529a6442bc86d5ae1c5b4bf9c5dbfb28739a23e44278258c520be47f96455e9"
     },
     {
       "path": ".gitignore",
@@ -39,8 +39,8 @@
     },
     {
       "path": "apps/desktop/native.spec",
-      "bytes": 1907,
-      "sha256": "7b1b920463d822184e915b7c54613ffa6e70b07da1678c4afc6320b6ca18f6b2"
+      "bytes": 1968,
+      "sha256": "819e13240ee0b64721dbc40148ea80810e3f8bef3f09df37a9ab0aff6eac3ff7"
     },
     {
       "path": "apps/desktop/platform_support.py",
@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/build-multiplataforma.md",
-      "bytes": 8127,
-      "sha256": "3189972d3c6946db5fb38b38cb239740ef690dbbbb44d748b9678d63033c365d"
+      "bytes": 8332,
+      "sha256": "b584a48e2b6b9e6e72a65ab92155356fabb5c29289277435d5ac2c965aed82f9"
     },
     {
       "path": "docs/diagnostico.md",

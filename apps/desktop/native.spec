@@ -15,7 +15,7 @@ for package in ('demucs','einops','julius','safetensors','soundfile'):
 binaries=[(str(root/'vendor/ffmpeg'/name),'vendor/ffmpeg') for name in ('ffmpeg','ffprobe')]
 binaries += [(str(root/'vendor/download'/name),'vendor/download') for name in ('yt-dlp','node')]
 analysis=Analysis([str(root/'apps/desktop/main.py')],pathex=[str(root/'apps/desktop')],
-    binaries=binaries,datas=datas,hiddenimports=['demucs.htdemucs','demucs.hf','demucs.apply','safetensors.torch','soundfile'],
+    binaries=binaries,datas=datas,hiddenimports=['demucs.htdemucs','demucs.hf','demucs.apply','safetensors.torch','soundfile'] + (['PIL._tkinter_finder'] if sys.platform=='linux' else []),
     excludes=['onnx','onnxruntime','matplotlib','pandas','scipy','tensorflow','pytest','IPython'],noarchive=False)
 archive=PYZ(analysis.pure)
 exe=EXE(archive,analysis.scripts,[],exclude_binaries=True,name='GCP Yt Rebalance',

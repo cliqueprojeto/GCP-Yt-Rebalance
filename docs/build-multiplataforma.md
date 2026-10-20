@@ -1,6 +1,6 @@
 # GCP Yt Rebalance — builds nativos e downloads
 
-Estado revisto em 20/10/2026: o instalador Windows 0.3 foi instalado e testado. Os builds macOS e Linux estão **preparados, ainda não executados**. Ainda não há DMG/DEB reais. O GitHub agora está autenticado como `cliqueprojeto`, mas o projeto não tem remote/repositório correspondente. Não há WSL/Linux local nem Mac disponível nesta sessão.
+Estado revisto em 20/10/2026: o instalador Windows 0.3 foi instalado e testado. O repositório privado [cliqueprojeto/GCP-Yt-Rebalance](https://github.com/cliqueprojeto/GCP-Yt-Rebalance) foi criado com autorização do titular. O primeiro ciclo nativo é a [execução 39408624618](https://github.com/cliqueprojeto/GCP-Yt-Rebalance/actions/runs/39408624618). O DMG ARM64 foi gerado e passou nos testes do runner macOS 15.7.9 ARM64, incluindo montagem, cópia e primeira execução; Intel está em andamento. Linux apresentou ausência de `PIL._tkinter_finder` na primeira execução e exige novo build com esse módulo incluído. Não há WSL/Linux local nem Mac disponível nesta sessão.
 
 ## Ativação
 
@@ -9,11 +9,11 @@ Estado revisto em 20/10/2026: o instalador Windows 0.3 foi instalado e testado. 
 3. Acompanhar cada job. Só após sucesso, baixar o arquivo em **Artifacts**: `windows-x64`, `macos-intel`, `macos-apple-silicon` ou `linux-amd64`. Os artefatos ficam por sete dias. Cada pacote inclui checksum e evidências.
 4. Qualquer falha impede marcar o respectivo instalador como validado. Analisar os diagnósticos, corrigir no SO correspondente e executar novamente. Não publicar os artefatos como release final sem os aceites abaixo.
 
-Os minutos/runners são administrados na própria conta GitHub; nenhum serviço, conta ou execução externa foi criado nesta sessão.
+Os minutos/runners são administrados na própria conta GitHub. O titular autorizou o envio privado e a execução dos builds, incluindo o consumo dos runners. Nenhum outro repositório foi alterado.
 
-Por padrão o fluxo executa somente Mac Intel, Mac ARM64 e Linux; `include_windows` permite incluir o Windows se necessário. Antes de iniciar, confirmar a autorização de uso dos minutos e o orçamento da conta. Consumo além da franquia pode ser cobrado, conforme a [documentação de cobrança do Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions). Nenhum valor ou limite de gastos foi alterado automaticamente.
+Por padrão o fluxo executa somente Mac Intel, Mac ARM64 e Linux; `target` permite repetir apenas um alvo corrigido e `include_windows` permite incluir o Windows se necessário. Consumo além da franquia pode ser cobrado, conforme a [documentação de cobrança do Actions](https://docs.github.com/en/billing/concepts/product-billing/github-actions). Nenhum valor ou limite de gastos foi alterado automaticamente.
 
-O token do GitHub CLI atualmente não inclui o escopo `workflow`, necessário para enviar os arquivos de Actions por essa autenticação. Após aprovação do envio, `gh auth refresh -h github.com -s workflow` permite o titular autorizar esse acesso pelo fluxo normal do GitHub. Não fornecer senhas ou tokens no chat. Referência: [escopos OAuth oficiais](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps).
+A autorização do escopo `workflow` foi concluída pelo titular no fluxo normal do GitHub. Não fornecer senhas, tokens ou códigos de recuperação no chat. Referência: [escopos OAuth oficiais](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps).
 
 Pacote revisável de fontes: `dist/GCP Yt Rebalance - Fontes para build Mac Linux.zip`, gerado por `scripts/export_build_sources.py`, com manifesto interno e checksum SHA-256. **É fonte para build, não é instalador.** Exclui arquivos de áudio, histórico, credenciais, caches e os pesos; estes últimos são obtidos e verificados explicitamente no build. O programa final inclui os pesos e não os baixa na primeira execução.
 
