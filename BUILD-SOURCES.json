@@ -4,8 +4,8 @@
   "files": [
     {
       "path": ".github/workflows/desktop-installers.yml",
-      "bytes": 9957,
-      "sha256": "3529a6442bc86d5ae1c5b4bf9c5dbfb28739a23e44278258c520be47f96455e9"
+      "bytes": 10131,
+      "sha256": "1e7758e9134ef1c873d70dbc06b78d62ade77d93d4ac41c72d4329d8937fe70e"
     },
     {
       "path": ".gitignore",
@@ -29,8 +29,8 @@
     },
     {
       "path": "apps/desktop/main.py",
-      "bytes": 7230,
-      "sha256": "976e26aa1f148eedd6176a359098fad60a116edfcc6852fc343b71994d6c02b2"
+      "bytes": 7496,
+      "sha256": "8cef7da79dd73a10f9220e831687c985894f8f81db2d4663ad71acbc0b6afb74"
     },
     {
       "path": "apps/desktop/naming.py",
@@ -39,8 +39,8 @@
     },
     {
       "path": "apps/desktop/native.spec",
-      "bytes": 1968,
-      "sha256": "819e13240ee0b64721dbc40148ea80810e3f8bef3f09df37a9ab0aff6eac3ff7"
+      "bytes": 2677,
+      "sha256": "633cb35186356bcda4654109c8f626e54166bdad1cabe829021f608006af11d9"
     },
     {
       "path": "apps/desktop/platform_support.py",
@@ -228,6 +228,11 @@
       "sha256": "81b372b2afd3e0bf740ce76d73f74f554ef08ca1007d35d92e149bec64f15712"
     },
     {
+      "path": "docs/teste-macos-linux-v03.md",
+      "bytes": 3092,
+      "sha256": "2870734eabfab9b8d5338202a491e524dd66fcc7b4ee69243add16645dc52043"
+    },
+    {
       "path": "docs/teste-windows-v02.md",
       "bytes": 5692,
       "sha256": "7bea5bd2769bac1c9fd56ece963c56b4b4898ceebb3513f64cdb6b906fed16a5"
@@ -301,6 +306,11 @@
       "path": "scripts/lock_poc.py",
       "bytes": 1294,
       "sha256": "77f2dd9dc14021ac530b22f3454c660c14061b60ef708a69473b794e44253e94"
+    },
+    {
+      "path": "scripts/macos_downloader_probe.py",
+      "bytes": 1872,
+      "sha256": "6a81fbc7aca226290262255d13402884d91c6b24efc6aa8b24a167e46177ee36"
     },
     {
       "path": "scripts/native-sources.lock.json",

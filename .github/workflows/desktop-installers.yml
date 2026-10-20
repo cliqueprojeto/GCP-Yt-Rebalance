@@ -69,6 +69,9 @@ jobs:
       - name: Ferramentas macOS
         if: runner.os == 'macOS'
         run: brew list nasm >/dev/null 2>&1 || brew install nasm
+      - name: Provar integridade do downloader universal macOS antes do build completo
+        if: runner.os == 'macOS'
+        run: python scripts/macos_downloader_probe.py
       - name: Dependências Python fixadas e runtime nativo verificado
         run: |
           python scripts/prepare_ci.py --python

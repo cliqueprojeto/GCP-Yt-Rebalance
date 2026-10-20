@@ -103,11 +103,13 @@ def launch():
             tools = {}
             for name in ("ffmpeg","ffprobe"):
                 result = subprocess.run([str(ffmpeg(name)),"-version"],capture_output=True,timeout=30,creationflags=HIDDEN)
-                assert result.returncode == 0
+                if result.returncode:
+                    raise RuntimeError(f"{name} --version: código {result.returncode}: {result.stderr.decode(errors='replace')[-2000:]}")
                 tools[name] = result.stdout.decode(errors="replace").splitlines()[0]
             from runtime import download_tool
             downloader = subprocess.run([str(download_tool("yt-dlp")),"--version"],capture_output=True,timeout=45,creationflags=HIDDEN)
-            assert downloader.returncode == 0
+            if downloader.returncode:
+                raise RuntimeError(f"yt-dlp --version: código {downloader.returncode}: {downloader.stderr.decode(errors='replace')[-2000:]}")
             tools["yt-dlp"] = downloader.stdout.decode().strip()
             result = dict(status="passed",product=PRODUCT,version=VERSION,frozen=bool(getattr(sys,"frozen",False)),
                 torch=torch.__version__,numpy=numpy.__version__,soundfile=soundfile.__version__,models_verified=True,
