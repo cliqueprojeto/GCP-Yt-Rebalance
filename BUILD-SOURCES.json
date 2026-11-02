@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/arch-private.yml",
-      "bytes": 3169,
-      "sha256": "a4337a16f90e13f605410b2bfee00d2e7de19dda2714c6f1c52502b2210a9fee"
+      "bytes": 3415,
+      "sha256": "cf94d01b53cc7752194e6e55ee59fecdd0d648e4edff3254562f87292bacc86a"
     },
     {
       "path": ".github/workflows/assemble-private.yml",
@@ -319,8 +319,8 @@
     },
     {
       "path": "scripts/build_arch_ci.sh",
-      "bytes": 3843,
-      "sha256": "8dec15311c99b7d48b872eafe401cdeb6c8bb3a400ebcde5d195bd3aef5bc4a8"
+      "bytes": 1505,
+      "sha256": "da8f968e30222115328278ac42cb0ca2ead34ca29ab7052ecf169a5463cd2f92"
     },
     {
       "path": "scripts/export_build_sources.py",
@@ -456,6 +456,11 @@
       "path": "scripts/taskbar_icon.py",
       "bytes": 947,
       "sha256": "b79509b5a2f03453683963760da29223e8f55c83b523f3a760169c90b4ef013c"
+    },
+    {
+      "path": "scripts/test_arch_runtime.sh",
+      "bytes": 2930,
+      "sha256": "e3c1d20803b8174b66b1f6eb5cdd59c5d5db733a3a9fce25a580d67d6dd9f961"
     },
     {
       "path": "scripts/windows-installer.nsi",

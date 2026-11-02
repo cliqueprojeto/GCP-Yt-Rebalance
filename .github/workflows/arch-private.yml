@@ -44,6 +44,9 @@ jobs:
           mkdir -p artifacts/arch
           docker image inspect archlinux:base-devel > artifacts/arch/container-image.json
           docker run --rm --shm-size=2g --volume "$PWD:/work" archlinux:base-devel bash /work/scripts/build_arch_ci.sh
+          docker pull archlinux:base
+          docker image inspect archlinux:base > artifacts/arch/runtime-container-image.json
+          docker run --rm --shm-size=2g --volume "$PWD:/work" archlinux:base bash /work/scripts/test_arch_runtime.sh
       - name: Guardar pacote e evidências privadas
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
