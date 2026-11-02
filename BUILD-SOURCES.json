@@ -9,8 +9,13 @@
     },
     {
       "path": ".github/workflows/arch-private.yml",
-      "bytes": 2767,
-      "sha256": "74db89e61348c8894f4ba9ff01b115e9b24d907eb01fd3585f4357aa9e31b12b"
+      "bytes": 2782,
+      "sha256": "d7daf5b172c348f9a0b3ae5b236c8c7480e3fc4197faa70cde7a7799d05097bd"
+    },
+    {
+      "path": ".github/workflows/assemble-private.yml",
+      "bytes": 1094,
+      "sha256": "fefedc6c0985f376e3e6495bc6a905f14f5a8816bdf328c83671212b855150a2"
     },
     {
       "path": ".github/workflows/desktop-installers.yml",
@@ -406,6 +411,11 @@
       "path": "scripts/prepare_windows_package.py",
       "bytes": 3255,
       "sha256": "01368ad09eb55752bf152c8b35ab1482413aa9022e5fe7d678f1e830b6796214"
+    },
+    {
+      "path": "scripts/release_transfer.py",
+      "bytes": 6580,
+      "sha256": "37c928ab16d834d59bb34b7fb51c153fd473d1a6e37615d09f5d9060fa1c7363"
     },
     {
       "path": "scripts/requirements-desktop-native.txt",

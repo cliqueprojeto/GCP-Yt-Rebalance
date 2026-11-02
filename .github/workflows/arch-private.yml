@@ -29,7 +29,7 @@ jobs:
           test "$GH_REPO" = cliqueprojeto/GCP-Yt-Rebalance
           test "$RELEASE_TAG" = v0.3.0
           mkdir -p dist artifacts/arch-input
-          gh release download "$RELEASE_TAG" --pattern gcp-yt-rebalance_0.3.0_amd64.deb --dir dist
+          python3 scripts/release_transfer.py assemble --directory dist --select gcp-yt-rebalance_0.3.0_amd64.deb
           gh release download "$RELEASE_TAG" --pattern GCP-Yt-Rebalance-0.3.0-Linux-Test-Evidence.zip --dir artifacts/arch-input
           echo '443518f3d56ff929f0cbe4d2d3b6402fce40f100bd94a0cf27cdd09a03d71dcc  dist/gcp-yt-rebalance_0.3.0_amd64.deb' | sha256sum -c -
           python3 - <<'PY'
