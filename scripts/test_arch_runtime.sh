@@ -34,7 +34,14 @@ runuser -u builder -- timeout 240s env -u PYTHONPATH -u PYTHONHOME PATH=/gcp-no-
   /usr/bin/gcp-yt-rebalance --worker "$smoke/stems/request.json"
 jq -e '.phase == "Concluído"' <(tail -n 1 "$smoke/stems/events.jsonl")
 cp "$smoke/health.json" artifacts/arch/health.json
-find "$smoke" -name relatorio.json -exec cp --parents '{}' /work/artifacts/arch/ \;
+mkdir -p artifacts/arch/reports
+index=0
+while IFS= read -r -d '' report; do
+  target="artifacts/arch/reports/case-$(printf '%02d' "$index").json"
+  cp "$report" "$target"
+  chmod 644 "$target"
+  index=$((index+1))
+done < <(find "$smoke" -name relatorio.json -print0)
 pacman -R --noconfirm gcp-yt-rebalance-bin
 test ! -e /usr/bin/gcp-yt-rebalance
 test ! -e /opt/gcp-yt-rebalance

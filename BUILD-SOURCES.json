@@ -459,8 +459,8 @@
     },
     {
       "path": "scripts/test_arch_runtime.sh",
-      "bytes": 2930,
-      "sha256": "e3c1d20803b8174b66b1f6eb5cdd59c5d5db733a3a9fce25a580d67d6dd9f961"
+      "bytes": 3113,
+      "sha256": "bcb8edea644783a749b4dc90ab7ed5ae638f22763d3c668577600da8aceb5177"
     },
     {
       "path": "scripts/windows-installer.nsi",
