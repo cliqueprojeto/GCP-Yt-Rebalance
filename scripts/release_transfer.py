@@ -1,11 +1,12 @@
 """Transporte em blocos de instaladores já validados; restrito à release privada 0.3.0."""
 import argparse
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
 import json
 import os
 from pathlib import Path
 import subprocess
+import time
 
 ROOT=Path(__file__).resolve().parents[1]
 REPO='cliqueprojeto/GCP-Yt-Rebalance'
@@ -21,7 +22,14 @@ ALLOWED={
 
 def gh(*args):
     environment=os.environ.copy(); environment['GODEBUG']='http2client=0'
-    return subprocess.check_output(['gh',*args],text=True,encoding='utf-8',env=environment)
+    read_only=(args[:2]==('repo','view') or (args[0]=='api' and '--method' not in args))
+    attempts=3 if read_only else 1
+    for attempt in range(attempts):
+        try:
+            return subprocess.check_output(['gh',*args],text=True,encoding='utf-8',env=environment,timeout=240)
+        except (subprocess.CalledProcessError,subprocess.TimeoutExpired):
+            if attempt==attempts-1: raise
+            time.sleep(attempt+1)
 
 
 def sha(path):
@@ -76,24 +84,40 @@ def upload(folder,select):
     record=release()
     data=json.loads((folder/MANIFEST).read_text()); validate(data)
     assets=json.loads(gh('api',f'repos/{REPO}/releases/{record["id"]}/assets','--paginate','--slurp'))
-    existing={a['name']:a for page in assets for a in page if a['state']=='uploaded'}
+    existing={a['name']:a for page in assets for a in page}
     if MANIFEST not in existing:
         gh('release','upload',TAG,'--repo',REPO,str(folder/MANIFEST))
+    elif existing[MANIFEST].get('digest')!='sha256:'+sha(folder/MANIFEST):
+        raise ValueError('O manifesto remoto diverge; transporte interrompido')
     chunks=[c for f in data['files'] if not select or f['name']==select for c in f['chunks']]
     def send(chunk):
         asset=existing.get(chunk['name'])
-        if asset and asset['size']==chunk['bytes'] and asset.get('digest')=='sha256:'+chunk['sha256']:
+        if asset and asset['state']=='uploaded' and asset['size']==chunk['bytes'] and asset.get('digest')=='sha256:'+chunk['sha256']:
             return
         if sha(folder/chunk['name'])!=chunk['sha256']: raise ValueError('Bloco mudou antes do envio')
-        for attempt in range(3):
+        if asset: gh('api',f'repos/{REPO}/releases/assets/{int(asset["id"])}','--method','DELETE')
+        for attempt in range(5):
             try:
-                gh('release','upload',TAG,'--repo',REPO,str(folder/chunk['name']),'--clobber')
+                response=json.loads(gh('api','--method','POST','-H','Content-Type: application/octet-stream','--input',str(folder/chunk['name']),f'https://uploads.github.com/repos/{REPO}/releases/{int(record["id"])}/assets?name={chunk["name"]}'))
+                if response.get('digest')!='sha256:'+chunk['sha256'] or response.get('size')!=chunk['bytes']:
+                    raise ValueError('Hash recebido pelo GitHub diverge')
                 print('Uploaded '+chunk['name'],flush=True)
                 return
             except subprocess.CalledProcessError:
-                if attempt==2: raise
+                if attempt==4: raise
+                time.sleep(min(attempt+1,4))
+                pages=json.loads(gh('api',f'repos/{REPO}/releases/{record["id"]}/assets','--paginate','--slurp'))
+                current=next((a for page in pages for a in page if a['name']==chunk['name']),None)
+                if current:
+                    if current.get('digest')=='sha256:'+chunk['sha256']: return
+                    gh('api',f'repos/{REPO}/releases/assets/{int(current["id"])}','--method','DELETE')
+    errors=[]
     with ThreadPoolExecutor(max_workers=3) as executor:
-        list(executor.map(send,chunks))
+        futures=[executor.submit(send,chunk) for chunk in chunks]
+        for future in as_completed(futures):
+            try: future.result()
+            except Exception as error: errors.append(error)
+    if errors: raise RuntimeError(f'{len(errors)} blocos falharam; repita upload para retomar somente os pendentes') from errors[-1]
 
 
 def join(item,folder,output):

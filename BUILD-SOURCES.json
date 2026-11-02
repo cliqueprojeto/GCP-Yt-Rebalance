@@ -414,8 +414,8 @@
     },
     {
       "path": "scripts/release_transfer.py",
-      "bytes": 9025,
-      "sha256": "a395ea14037a8d59962d275963e0bdc2d1837ae7956130ea5a91e46598c08143"
+      "bytes": 10769,
+      "sha256": "709c8a6246343ec4ed1ff789296937ef10be344180a9119ad7920da8af48cf84"
     },
     {
       "path": "scripts/requirements-desktop-native.txt",
@@ -484,8 +484,8 @@
     },
     {
       "path": "tests/test_release_transfer.py",
-      "bytes": 2039,
-      "sha256": "4c23197a999e5dfd1595343feec27b8c034895c3ada6e9f42cd297badf8e1099"
+      "bytes": 3304,
+      "sha256": "4cf59ec096828576ad529a1577ee3c8c361c2910d632edd27860111928f6b31b"
     },
     {
       "path": "tests/test_v02.py",

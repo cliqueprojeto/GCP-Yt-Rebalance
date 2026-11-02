@@ -1,8 +1,10 @@
 import hashlib
+import json
 from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 import release_transfer as transfer
@@ -34,6 +36,23 @@ class ReleaseTransferTests(unittest.TestCase):
             chunk.write_bytes(content); (out/'installer').write_bytes(b'user file')
             with self.assertRaises(FileExistsError): transfer.join(item,incoming,out)
             self.assertEqual((out/'installer').read_bytes(),b'user file')
+
+    def test_cleanup_keeps_blocks_until_all_final_installers_are_verified(self):
+        data={'repository':transfer.REPO,'tag':transfer.TAG,'files':[dict(name=name,sha256=digest,bytes=1,chunks=[dict(name=f'transfer-v0.3.0-{digest[:12]}-0000.part',bytes=1,sha256='0'*64)]) for name,digest in transfer.ALLOWED.items()]}
+        with tempfile.TemporaryDirectory() as directory:
+            folder=Path(directory)
+            (folder/transfer.MANIFEST).write_text(json.dumps(data),encoding='utf-8')
+            with patch.object(transfer,'release',return_value={'id':42}), patch.object(transfer,'gh',return_value='[[]]') as api:
+                with self.assertRaises(ValueError): transfer.cleanup(folder)
+                self.assertEqual(api.call_count,1)
+                self.assertNotIn('DELETE',api.call_args.args)
+
+    def test_transient_read_failure_is_retried(self):
+        import subprocess
+        failure=subprocess.CalledProcessError(1,['gh'])
+        with patch.object(transfer.subprocess,'check_output',side_effect=[failure,'{}']) as command, patch.object(transfer.time,'sleep'):
+            self.assertEqual(transfer.gh('api','repos/example/project'),'{}')
+            self.assertEqual(command.call_count,2)
 
 
 if __name__=='__main__': unittest.main()
