@@ -113,14 +113,22 @@ def join(item,folder,output):
 
 
 def assemble(output,select):
-    release()
+    record=release()
     folder=ROOT/'.cache/release-transfer'; folder.mkdir(parents=True,exist_ok=True)
     output.mkdir(parents=True,exist_ok=True)
-    gh('release','download',TAG,'--repo',REPO,'--pattern',MANIFEST,'--dir',str(folder),'--clobber')
+    pages=json.loads(gh('api',f'repos/{REPO}/releases/{record["id"]}/assets','--paginate','--slurp'))
+    assets={asset['name']:asset for page in pages for asset in page if asset['state']=='uploaded'}
+    def download(name):
+        asset=assets[name]
+        environment=os.environ.copy(); environment['GODEBUG']='http2client=0'
+        with (folder/name).open('wb') as stream:
+            subprocess.run(['gh','api','-H','Accept: application/octet-stream',f'repos/{REPO}/releases/assets/{int(asset["id"])}'],stdout=stream,check=True,env=environment,timeout=240)
+    download(MANIFEST)
     data=json.loads((folder/MANIFEST).read_text()); validate(data)
     for item in data['files']:
         if select and item['name']!=select: continue
-        gh('release','download',TAG,'--repo',REPO,'--pattern',f'transfer-v0.3.0-{item["sha256"][:12]}-*.part','--dir',str(folder),'--clobber')
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            list(executor.map(download,[chunk['name'] for chunk in item['chunks']]))
         join(item,folder,output)
         print('Reassembled and verified '+item['name'],flush=True)
 

@@ -21,7 +21,7 @@ build=$(mktemp -d /tmp/gcp-arch-build.XXXXXX)
 cp packaging/arch/PKGBUILD packaging/arch/NOTICE-PRIVATE.txt "$build/"
 cp dist/gcp-yt-rebalance_0.3.0_amd64.deb "$build/"
 chown -R builder:builder "$build"
-printf '\nPKGEXT=".pkg.tar.zst"\nCOMPRESSZST=(zstd -c -T2 -6 -)\n' >> /etc/makepkg.conf
+printf '\nPKGEXT=".pkg.tar.zst"\nPACKAGER="Bruno Albertini"\nCOMPRESSZST=(zstd -c -T2 -6 -)\n' >> /etc/makepkg.conf
 runuser -u builder -- bash -c 'cd "$1"; makepkg --verifysource; makepkg --printsrcinfo > .SRCINFO; makepkg --cleanbuild --noconfirm' bash "$build"
 package="$build/gcp-yt-rebalance-bin-0.3.0-1-x86_64.pkg.tar.zst"
 test -f "$package"

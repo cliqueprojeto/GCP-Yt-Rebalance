@@ -1,8 +1,9 @@
-# Receita local de avaliaÃ§Ã£o privada. Nenhuma credencial Ã© lida ou armazenada.
+# Receita local de avaliação privada. Nenhuma credencial é lida ou armazenada.
+# Maintainer: Bruno Albertini
 pkgname=gcp-yt-rebalance-bin
 pkgver=0.3.0
 pkgrel=1
-pkgdesc='GCP Yt Rebalance: conversÃ£o e separaÃ§Ã£o de Ã¡udio CPU local'
+pkgdesc='GCP Yt Rebalance: conversão e separação de áudio CPU local'
 arch=('x86_64')
 url='https://gestaoculturalpro.com.br'
 license=('LicenseRef-Private-Evaluation-Pending')
@@ -11,7 +12,7 @@ depends=('glibc' 'gcc-libs' 'libx11' 'libxext' 'libxrender' 'libxft'
 optdepends=('xorg-xwayland: interface em sessões Wayland')
 provides=('gcp-yt-rebalance')
 conflicts=('gcp-yt-rebalance')
-# strip/debug podem destruir o arquivo interno dos executÃ¡veis PyInstaller.
+# strip/debug podem destruir o arquivo interno dos executáveis PyInstaller.
 options=('!strip' '!debug')
 _deb="gcp-yt-rebalance_${pkgver}_amd64.deb"
 source=("${_deb}" 'NOTICE-PRIVATE.txt')

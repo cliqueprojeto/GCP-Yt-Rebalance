@@ -9,8 +9,8 @@
     },
     {
       "path": ".github/workflows/arch-private.yml",
-      "bytes": 2782,
-      "sha256": "d7daf5b172c348f9a0b3ae5b236c8c7480e3fc4197faa70cde7a7799d05097bd"
+      "bytes": 3169,
+      "sha256": "a4337a16f90e13f605410b2bfee00d2e7de19dda2714c6f1c52502b2210a9fee"
     },
     {
       "path": ".github/workflows/assemble-private.yml",
@@ -289,8 +289,8 @@
     },
     {
       "path": "packaging/arch/PKGBUILD",
-      "bytes": 1494,
-      "sha256": "e653f52dafc3fe1c4906e9dd55ab51bf4799abe5eb76adb632794c296467836b"
+      "bytes": 1508,
+      "sha256": "80bd968bc4dd6d80f3e9a5aae3860ebdc07a43db5d93215f525823e56b429091"
     },
     {
       "path": "packaging/arch/README.md",
@@ -319,8 +319,8 @@
     },
     {
       "path": "scripts/build_arch_ci.sh",
-      "bytes": 3815,
-      "sha256": "21a54c001810babf778b809fac41e42d984e712e6e857380ac8dec0c022d29e4"
+      "bytes": 3843,
+      "sha256": "8dec15311c99b7d48b872eafe401cdeb6c8bb3a400ebcde5d195bd3aef5bc4a8"
     },
     {
       "path": "scripts/export_build_sources.py",
@@ -414,8 +414,8 @@
     },
     {
       "path": "scripts/release_transfer.py",
-      "bytes": 6580,
-      "sha256": "37c928ab16d834d59bb34b7fb51c153fd473d1a6e37615d09f5d9060fa1c7363"
+      "bytes": 7076,
+      "sha256": "8008e078785fe4ac8965898e5737915428d73df475a2f864f4ecffe86ff3f05d"
     },
     {
       "path": "scripts/requirements-desktop-native.txt",
@@ -476,6 +476,11 @@
       "path": "tests/test_native_packaging.py",
       "bytes": 2274,
       "sha256": "5817729430670c3e0259f4f380f7541ed6bae2aa9df57bdaf060a5602f6f5c6d"
+    },
+    {
+      "path": "tests/test_release_transfer.py",
+      "bytes": 2039,
+      "sha256": "4c23197a999e5dfd1595343feec27b8c034895c3ada6e9f42cd297badf8e1099"
     },
     {
       "path": "tests/test_v02.py",
