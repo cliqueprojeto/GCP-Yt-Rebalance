@@ -1,0 +1,12 @@
+GCP Yt Rebalance 0.3.0
+Desenvolvido por Bruno Albertini — Gestão Cultural Pro
+https://gestaoculturalpro.com.br
+
+Pacote experimental para avaliação privada autorizada pelo titular.
+A licença definitiva do aplicativo permanece pendente. Este pacote não concede
+licença de redistribuição pública do aplicativo, dos binários ou dos pesos.
+Os componentes de terceiros mantêm suas próprias licenças e avisos, incluídos em
+/opt/gcp-yt-rebalance/_internal/vendor/notices.
+Este aviso não substitui nem restringe as licenças desses componentes.
+
+O PKGBUILD é uma receita local; não foi publicado no AUR oficial.

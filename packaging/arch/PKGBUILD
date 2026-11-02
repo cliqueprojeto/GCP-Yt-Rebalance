@@ -1,0 +1,32 @@
+# Receita local de avaliaÃ§Ã£o privada. Nenhuma credencial Ã© lida ou armazenada.
+pkgname=gcp-yt-rebalance-bin
+pkgver=0.3.0
+pkgrel=1
+pkgdesc='GCP Yt Rebalance: conversÃ£o e separaÃ§Ã£o de Ã¡udio CPU local'
+arch=('x86_64')
+url='https://gestaoculturalpro.com.br'
+license=('LicenseRef-Private-Evaluation-Pending')
+depends=('glibc' 'gcc-libs' 'libx11' 'libxext' 'libxrender' 'libxft'
+         'fontconfig' 'freetype2' 'libxcb' 'zlib' 'xdg-utils' 'libxcrypt-compat')
+optdepends=('xorg-xwayland: interface em sessões Wayland')
+provides=('gcp-yt-rebalance')
+conflicts=('gcp-yt-rebalance')
+# strip/debug podem destruir o arquivo interno dos executÃ¡veis PyInstaller.
+options=('!strip' '!debug')
+_deb="gcp-yt-rebalance_${pkgver}_amd64.deb"
+source=("${_deb}" 'NOTICE-PRIVATE.txt')
+noextract=("${_deb}")
+sha256sums=('443518f3d56ff929f0cbe4d2d3b6402fce40f100bd94a0cf27cdd09a03d71dcc'
+            '344af6608890fe15552b23ac96986f6f92d5835b2753da80d237680f9493cb56')
+
+package() {
+  bsdtar -xOf "${srcdir}/${_deb}" data.tar.xz | bsdtar -xf - -C "${pkgdir}"
+  install -d "${pkgdir}/usr/bin"
+  printf '%s\n' '#!/bin/sh' 'exec "/opt/gcp-yt-rebalance/GCP Yt Rebalance" "$@"' \
+    > "${pkgdir}/usr/bin/gcp-yt-rebalance"
+  chmod 755 "${pkgdir}/usr/bin/gcp-yt-rebalance"
+  sed -i 's|^Exec=.*|Exec=gcp-yt-rebalance|' \
+    "${pkgdir}/usr/share/applications/gcp-yt-rebalance.desktop"
+  install -Dm644 "${srcdir}/NOTICE-PRIVATE.txt" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/NOTICE-PRIVATE.txt"
+}

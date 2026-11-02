@@ -1,0 +1,64 @@
+name: Arch Linux privado — pacote e instalação
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release privada com o DEB validado
+        type: string
+        default: v0.3.0
+permissions:
+  contents: write # Ler os assets do rascunho privado; nenhum token entra no container.
+jobs:
+  arch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Exigir repositório privado
+        env:
+          PRIVATE: ${{ github.event.repository.private }}
+        run: test "$PRIVATE" = true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Obter somente os insumos aprovados da release deste repositório
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          test "$GH_REPO" = cliqueprojeto/GCP-Yt-Rebalance
+          test "$RELEASE_TAG" = v0.3.0
+          mkdir -p dist artifacts/arch-input
+          gh release download "$RELEASE_TAG" --pattern gcp-yt-rebalance_0.3.0_amd64.deb --dir dist
+          gh release download "$RELEASE_TAG" --pattern GCP-Yt-Rebalance-0.3.0-Linux-Test-Evidence.zip --dir artifacts/arch-input
+          echo '443518f3d56ff929f0cbe4d2d3b6402fce40f100bd94a0cf27cdd09a03d71dcc  dist/gcp-yt-rebalance_0.3.0_amd64.deb' | sha256sum -c -
+          python3 - <<'PY'
+          import zipfile
+          with zipfile.ZipFile('artifacts/arch-input/GCP-Yt-Rebalance-0.3.0-Linux-Test-Evidence.zip') as archive:
+              for name in ('native-payload.json','fixture.wav'):
+                  with open('artifacts/arch-input/'+name,'wb') as output: output.write(archive.read(name))
+          PY
+      - name: Construir e testar no Arch Linux oficial
+        run: |
+          docker pull archlinux:base-devel
+          mkdir -p artifacts/arch
+          docker image inspect archlinux:base-devel > artifacts/arch/container-image.json
+          docker run --rm --shm-size=2g --volume "$PWD:/work" archlinux:base-devel bash /work/scripts/build_arch_ci.sh
+      - name: Guardar pacote e evidências privadas
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: archlinux-x86_64
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: error
+          include-hidden-files: true
+          path: |
+            dist/*.pkg.tar.zst
+            dist/*.pkg.tar.zst.sha256
+            artifacts/arch/
+      - name: Guardar diagnóstico de falha
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: diagnosticos-archlinux
+          path: artifacts/arch/

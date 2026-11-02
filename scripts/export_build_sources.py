@@ -9,9 +9,9 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     files={ROOT/"README.md",ROOT/".gitignore",ROOT/".gitattributes"}
-    for folder in ("apps","scripts","tests",".github","models"):
+    for folder in ("apps","scripts","tests",".github","models","packaging"):
         for path in (ROOT/folder).rglob("*"):
-            if path.is_file() and path.suffix in (".py",".spec",".txt",".lock",".json",".nsi",".yml",".yaml",".md") and "__pycache__" not in path.parts and "weights" not in path.parts and "audio" not in path.parts:
+            if path.is_file() and (path.suffix in (".py",".sh",".spec",".txt",".lock",".json",".nsi",".yml",".yaml",".md") or path.name in ("PKGBUILD",".SRCINFO")) and "__pycache__" not in path.parts and "weights" not in path.parts and "audio" not in path.parts:
                 files.add(path)
     for path in (ROOT/"assets/branding").iterdir():
         if path.is_file() and path.suffix.lower() in (".png",".ico",".icns",".json",".md"): files.add(path)
@@ -29,7 +29,7 @@ def main():
             content=path.read_bytes()
             # O manifesto deve coincidir com o checkout Git, também no Windows.
             # Preserva UTF-8/BOM; normaliza somente CRLF dos arquivos de texto.
-            if path.suffix.lower() in (".py",".spec",".txt",".lock",".json",".nsi",".yml",".yaml",".md") or path.name in (".gitignore",".gitattributes"):
+            if path.suffix.lower() in (".py",".sh",".spec",".txt",".lock",".json",".nsi",".yml",".yaml",".md") or path.name in (".gitignore",".gitattributes","PKGBUILD",".SRCINFO"):
                 content=content.replace(b"\r\n",b"\n")
             manifest.append(dict(path=relative,bytes=len(content),sha256=hashlib.sha256(content).hexdigest()))
             archive.writestr(relative,content)
