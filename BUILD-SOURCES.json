@@ -289,8 +289,8 @@
     },
     {
       "path": "packaging/arch/PKGBUILD",
-      "bytes": 1508,
-      "sha256": "80bd968bc4dd6d80f3e9a5aae3860ebdc07a43db5d93215f525823e56b429091"
+      "bytes": 1703,
+      "sha256": "11407bba6e58148717591fbba1358d44f36f20f2a0512a160d6bb7506b10df4f"
     },
     {
       "path": "packaging/arch/README.md",
@@ -404,8 +404,8 @@
     },
     {
       "path": "scripts/prepare_private_release.py",
-      "bytes": 3877,
-      "sha256": "e58ff604910a7f1bc5a56c242ae1f5c4b1ce96b27f3a5c0a2947c28ed9a8ed22"
+      "bytes": 4358,
+      "sha256": "c57203e157d999fa59a01363b8acd290820c7eeb715aa135dbace7264d6d78ab"
     },
     {
       "path": "scripts/prepare_windows_package.py",
@@ -414,8 +414,8 @@
     },
     {
       "path": "scripts/release_transfer.py",
-      "bytes": 7076,
-      "sha256": "8008e078785fe4ac8965898e5737915428d73df475a2f864f4ecffe86ff3f05d"
+      "bytes": 9025,
+      "sha256": "a395ea14037a8d59962d275963e0bdc2d1837ae7956130ea5a91e46598c08143"
     },
     {
       "path": "scripts/requirements-desktop-native.txt",

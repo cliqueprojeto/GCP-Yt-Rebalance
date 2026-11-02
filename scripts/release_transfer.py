@@ -133,12 +133,45 @@ def assemble(output,select):
         print('Reassembled and verified '+item['name'],flush=True)
 
 
+def cleanup(folder):
+    record=release()
+    data=json.loads((folder/MANIFEST).read_text(encoding='utf-8')); validate(data)
+    pages=json.loads(gh('api',f'repos/{REPO}/releases/{record["id"]}/assets','--paginate','--slurp'))
+    assets={asset['name']:asset for page in pages for asset in page}
+    for name,digest in ALLOWED.items():
+        asset=assets.get(name,{})
+        if asset.get('state')!='uploaded' or asset.get('digest')!='sha256:'+digest:
+            raise ValueError(f'Instalador final não verificado; blocos preservados: {name}')
+    names={chunk['name'] for item in data['files'] for chunk in item['chunks']}
+    if assets.get(MANIFEST,{}).get('digest')=='sha256:'+sha(folder/MANIFEST): names.add(MANIFEST)
+    deb=next(item for item in data['files'] if item['name'].endswith('.deb'))
+    if assets.get('transfer-probe-16m.part',{}).get('digest')=='sha256:'+deb['chunks'][0]['sha256']:
+        names.add('transfer-probe-16m.part')
+    temporary_source='GCP.Yt.Rebalance.-.Fontes.para.build.Mac.Linux.zip'
+    if assets.get(temporary_source,{}).get('digest')=='sha256:6231860a334bede48fa995e7f84ce42411d6ac23d37093fa587e96e1c9bf07b9':
+        names.add(temporary_source)
+    def remove(name):
+        if name not in assets: return
+        for attempt in range(3):
+            try:
+                gh('api',f'repos/{REPO}/releases/assets/{int(assets[name]["id"])}','--method','DELETE')
+                return
+            except subprocess.CalledProcessError as error:
+                try:
+                    if str(json.loads(error.output).get('status'))=='404': return
+                except (ValueError,AttributeError): pass
+                if attempt==2: raise
+    with ThreadPoolExecutor(max_workers=3) as executor: list(executor.map(remove,sorted(names)))
+    print('Temporary private transfer assets removed after verifying all four installers',flush=True)
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
-    parser.add_argument('mode',choices=('split','upload','assemble'))
+    parser.add_argument('mode',choices=('split','upload','assemble','cleanup'))
     parser.add_argument('--directory',type=Path,required=True)
     parser.add_argument('--select',choices=tuple(ALLOWED))
     args=parser.parse_args()
     if args.mode=='split': split(args.directory)
     elif args.mode=='upload': upload(args.directory,args.select)
-    else: assemble(args.directory,args.select)
+    elif args.mode=='assemble': assemble(args.directory,args.select)
+    else: cleanup(args.directory)

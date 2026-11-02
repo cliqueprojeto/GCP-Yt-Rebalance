@@ -45,14 +45,18 @@ def main():
     files.append(archive)
     arch=dist/'gcp-yt-rebalance-bin-0.3.0-1-x86_64.pkg.tar.zst'
     if arch.exists():
-        report=json.loads((ROOT/'artifacts/arch-release/artifacts/arch/summary.json').read_text())
+        report=json.loads((ROOT/'artifacts/arch-release/artifacts/arch/summary.json').read_text(encoding='utf-8'))
         if report['status']!='passed': raise ValueError('Pacote Arch sem teste aprovado')
-        expected=arch.with_suffix(arch.suffix+'.sha256').read_text().split()[0]
+        expected=arch.with_suffix(arch.suffix+'.sha256').read_text(encoding='utf-8').split()[0]
         if digest(arch)!=expected: raise ValueError('Checksum Arch divergente')
         files.append(arch)
         recipe=stage/'GCP-Yt-Rebalance-0.3.0-Arch-PKGBUILD.zip'
         write_zip(recipe,{name:(ROOT/'packaging/arch'/name).read_bytes().replace(b'\r\n',b'\n') for name in ('PKGBUILD','.SRCINFO','NOTICE-PRIVATE.txt','README.md')})
         files.append(recipe)
+        arch_evidence=stage/'GCP-Yt-Rebalance-0.3.0-Arch-Test-Evidence.zip'
+        base=ROOT/'artifacts/arch-release/artifacts/arch'
+        write_zip(arch_evidence,{name:(base/name).read_bytes() for name in ('summary.json','health.json','package-info.txt','os-release.txt','system-packages.txt','container-image.json','runtime-container-image.json','payload-check.txt')})
+        files.append(arch_evidence)
     records=[]
     for path in files:
         checksum=digest(path)
@@ -63,11 +67,11 @@ def main():
                 try: os.link(path,target)
                 except OSError: shutil.copy2(path,target)
             if digest(target)!=checksum: raise ValueError(f'Anexo existente diverge: {name}')
-        target.with_suffix(target.suffix+'.sha256').write_text(f'{checksum}  {name}\n',encoding='utf-8')
+        target.with_suffix(target.suffix+'.sha256').write_text(f'{checksum}  {name}\n',encoding='utf-8',newline='\n')
         records.append(dict(name=name,bytes=target.stat().st_size,sha256=checksum))
     manifest=stage/'release-assets-0.3.0.json'
-    manifest.write_text(json.dumps(dict(product='GCP Yt Rebalance',version='0.3.0',visibility='private',prerelease=True,assets=records),ensure_ascii=False,indent=2),encoding='utf-8')
-    (stage/'SHA256SUMS-0.3.0.txt').write_text(''.join(f"{r['sha256']}  {r['name']}\n" for r in records),encoding='utf-8')
+    manifest.write_text(json.dumps(dict(product='GCP Yt Rebalance',version='0.3.0',visibility='private',prerelease=True,assets=records),ensure_ascii=False,indent=2),encoding='utf-8',newline='\n')
+    (stage/'SHA256SUMS-0.3.0.txt').write_text(''.join(f"{r['sha256']}  {r['name']}\n" for r in records),encoding='utf-8',newline='\n')
     print(json.dumps(records,ensure_ascii=False,indent=2))
 
 

@@ -21,7 +21,10 @@ sha256sums=('443518f3d56ff929f0cbe4d2d3b6402fce40f100bd94a0cf27cdd09a03d71dcc'
             '344af6608890fe15552b23ac96986f6f92d5835b2753da80d237680f9493cb56')
 
 package() {
-  bsdtar -xOf "${srcdir}/${_deb}" data.tar.xz | bsdtar -xf - -C "${pkgdir}"
+  local payload
+  payload=$(bsdtar -tf "${srcdir}/${_deb}" | grep -E '^data[.]tar([.](xz|zst|gz|bz2))?$')
+  [[ -n "$payload" && "$payload" != *$'\n'* ]] || return 1
+  (set -o pipefail; bsdtar -xOf "${srcdir}/${_deb}" "$payload" | bsdtar -xf - -C "${pkgdir}") || return 1
   install -d "${pkgdir}/usr/bin"
   printf '%s\n' '#!/bin/sh' 'exec "/opt/gcp-yt-rebalance/GCP Yt Rebalance" "$@"' \
     > "${pkgdir}/usr/bin/gcp-yt-rebalance"
