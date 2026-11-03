@@ -23,11 +23,18 @@ ALLOWED={
 def gh(*args):
     environment=os.environ.copy(); environment['GODEBUG']='http2client=0'
     read_only=(args[:2]==('repo','view') or (args[0]=='api' and '--method' not in args))
-    attempts=3 if read_only else 1
+    delete=(args[0]=='api' and '--method' in args and args[args.index('--method')+1]=='DELETE')
+    attempts=3 if read_only or delete else 1
     for attempt in range(attempts):
         try:
             return subprocess.check_output(['gh',*args],text=True,encoding='utf-8',env=environment,timeout=240)
-        except (subprocess.CalledProcessError,subprocess.TimeoutExpired):
+        except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
+            if delete and isinstance(error,subprocess.CalledProcessError):
+                try:
+                    status=str(json.loads(error.output).get('status'))
+                    if status=='404': return ''
+                    if status in ('401','403'): raise error
+                except (ValueError,TypeError,AttributeError): pass
             if attempt==attempts-1: raise
             time.sleep(attempt+1)
 
@@ -146,7 +153,8 @@ def assemble(output,select):
         asset=assets[name]
         environment=os.environ.copy(); environment['GODEBUG']='http2client=0'
         with (folder/name).open('wb') as stream:
-            subprocess.run(['gh','api','-H','Accept: application/octet-stream',f'repos/{REPO}/releases/assets/{int(asset["id"])}'],stdout=stream,check=True,env=environment,timeout=240)
+            # O destino é um arquivo binário verificado por SHA-256, nunca o terminal.
+            subprocess.run(['gh','api','--allow-escape-sequences','-H','Accept: application/octet-stream',f'repos/{REPO}/releases/assets/{int(asset["id"])}'],stdout=stream,check=True,env=environment,timeout=240)
     download(MANIFEST)
     data=json.loads((folder/MANIFEST).read_text()); validate(data)
     for item in data['files']:

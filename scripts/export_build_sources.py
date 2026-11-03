@@ -17,7 +17,7 @@ def main():
         if path.is_file() and path.suffix.lower() in (".png",".ico",".icns",".json",".md"): files.add(path)
     files.update((ROOT/"docs").glob("*.md"))
     files.update((ROOT/"docs/adr").glob("*.md"))
-    for name in ("model-acquisition.json","downloader-components.json","native-v03-2026-10-20.json"):
+    for name in ("model-acquisition.json","downloader-components.json","native-v03-2026-10-20.json","arch-v03-2026-11-02.json"):
         path=ROOT/"docs/evidence"/name
         if path.is_file(): files.add(path)
     manifest=[]

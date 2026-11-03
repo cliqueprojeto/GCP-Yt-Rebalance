@@ -15,6 +15,8 @@ A versão 0.3 unifica logo e ícone, inicia WAV em 16 bits, carrega idiomas de l
 - [Identidade visual](assets/branding/README.md)
 - [Resultados e pendências das Fases 0–1](docs/relatorio-fases-0-1.md)
 - [Instaladores Mac/Linux: testes, tamanhos, hashes e instruções](docs/teste-macos-linux-v03.md)
+- [Arch Linux privado: instalar com pacman ou reconstruir com PKGBUILD](packaging/arch/README.md)
+- [Release privada 0.3.0: arquivos, checksums e validação](docs/release-v0.3.0.md)
 
 ## Ferramentas executáveis desta etapa
 

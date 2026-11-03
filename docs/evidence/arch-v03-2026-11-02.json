@@ -1,0 +1,53 @@
+{
+  "product": "GCP Yt Rebalance",
+  "date": "2026-11-02",
+  "repository": "cliqueprojeto/GCP-Yt-Rebalance",
+  "visibility": "private",
+  "aur_published": false,
+  "run_id": 41547530593,
+  "run_url": "https://github.com/cliqueprojeto/GCP-Yt-Rebalance/actions/runs/41547530593",
+  "source_commit": "f15ef27c931f89b5dace29388db28ef25ef07e9e",
+  "package": {
+    "name": "gcp-yt-rebalance-bin-0.3.0-1-x86_64.pkg.tar.zst",
+    "bytes": 395778658,
+    "sha256": "2795ecf933c1677746395d44fa2e21ef009e2702326be46cd894535b504d1b0d",
+    "version": "0.3.0-1",
+    "arch": "x86_64",
+    "signed": false
+  },
+  "tests": {
+    "status": "passed",
+    "private": true,
+    "aur_published": false,
+    "makepkg_nonroot": true,
+    "payload_hashes_verified": true,
+    "desktop_entry_valid": true,
+    "installed_gui": true,
+    "conversions": [
+      "WAV",
+      "PCM",
+      "FLAC",
+      "MP3"
+    ],
+    "stems": true,
+    "uninstalled": true,
+    "path_isolated": true,
+    "runtime_python_package_present": false,
+    "fixture": "own synthetic signal; not musical quality validation"
+  },
+  "runtime_python_package_present": false,
+  "runtime_ffmpeg_package_present": false,
+  "container_images": {
+    "build": [
+      "archlinux@sha256:767de6eaa40dcfeda5263a48737ea03a782caabdf3a403b6e6a203c7fd333681"
+    ],
+    "runtime": [
+      "archlinux@sha256:ece6c971fec3c532fd508bce299a446deaf469feecbfe7c353e995bc1a5e7bba"
+    ]
+  },
+  "unit_tests_passed": 24,
+  "downloaded_sha256_verified": true,
+  "physical_machine_tested": false,
+  "wayland_tested": false,
+  "public_distribution_approved": false
+}

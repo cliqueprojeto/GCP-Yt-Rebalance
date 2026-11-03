@@ -228,6 +228,11 @@
       "sha256": "84dfd5cba6b2f61e2e4f460c22c72e1f6c0bb61dbfb81200bec7b4795801add1"
     },
     {
+      "path": "docs/evidence/arch-v03-2026-11-02.json",
+      "bytes": 1590,
+      "sha256": "60077863bb5f3c4390bce0da4927ff5de678060e6aff5c8cf589221cb72fd483"
+    },
+    {
       "path": "docs/evidence/downloader-components.json",
       "bytes": 277,
       "sha256": "37dd675850ea7bf40791fee5d274e0a7e07c98d81d6d449220ce025ab9f70842"
@@ -254,8 +259,8 @@
     },
     {
       "path": "docs/release-v0.3.0.md",
-      "bytes": 2016,
-      "sha256": "c091a30591ed578a6ee1c82f16955eec3aed82d71956c4c0065530bf08920929"
+      "bytes": 3143,
+      "sha256": "c965c9e573fbf949d23e012b8e178e8067193a1a0f4d36c86381132191579c99"
     },
     {
       "path": "docs/teste-macos-linux-v03.md",
@@ -283,6 +288,11 @@
       "sha256": "f62dc0ff4db707c247a0767bb0d7ba96025afa707e49346d4c1abc0f54056cc6"
     },
     {
+      "path": "packaging/arch/.SRCINFO",
+      "bytes": 939,
+      "sha256": "e4b16be987b4cfdd8fe5205bf113f9bfff17cfc3d37d797ece7405387ec5d09d"
+    },
+    {
       "path": "packaging/arch/NOTICE-PRIVATE.txt",
       "bytes": 622,
       "sha256": "344af6608890fe15552b23ac96986f6f92d5835b2753da80d237680f9493cb56"
@@ -294,13 +304,13 @@
     },
     {
       "path": "packaging/arch/README.md",
-      "bytes": 2538,
-      "sha256": "07b2829088b6681945071c74bd1b74dca70fbcef9941677a6624b05311fb115f"
+      "bytes": 2888,
+      "sha256": "696499837c794de533ac636d271b148904a111e4b83e13527c25afe2a4e57903"
     },
     {
       "path": "README.md",
-      "bytes": 2358,
-      "sha256": "f9c4a5c7487c2558719ba57abf363c4b6fa18aeffb63cd5039d7c4c6c100faca"
+      "bytes": 2541,
+      "sha256": "a3370d765071b9746e6642f3040385349101fd277dbf36e2e22488484062eb58"
     },
     {
       "path": "scripts/acquire_poc.py",
@@ -324,8 +334,8 @@
     },
     {
       "path": "scripts/export_build_sources.py",
-      "bytes": 2811,
-      "sha256": "24d794b394ed6373c360e981848f6e1e975435ad9dbce284e3e6a278cae2b20e"
+      "bytes": 2838,
+      "sha256": "9b96bf3fd5c8ea7ba3f9176a89f0b3b2532296f7a1d49f806de46cc506a2bb0d"
     },
     {
       "path": "scripts/finalize_windows.py",
@@ -414,8 +424,8 @@
     },
     {
       "path": "scripts/release_transfer.py",
-      "bytes": 10769,
-      "sha256": "709c8a6246343ec4ed1ff789296937ef10be344180a9119ad7920da8af48cf84"
+      "bytes": 11342,
+      "sha256": "a13f8fc4f4afc218c30f9482d7c11f71b3e6daf6983e6cdaaeb3f3e2e98634b4"
     },
     {
       "path": "scripts/requirements-desktop-native.txt",
@@ -461,6 +471,11 @@
       "path": "scripts/test_arch_runtime.sh",
       "bytes": 3113,
       "sha256": "bcb8edea644783a749b4dc90ab7ed5ae638f22763d3c668577600da8aceb5177"
+    },
+    {
+      "path": "scripts/verify_private_release.py",
+      "bytes": 2535,
+      "sha256": "f3e74eb4db7f9f348ffd1b1140e4c7f0c8c88b69961a3fbde3041e0dc812e86f"
     },
     {
       "path": "scripts/windows-installer.nsi",

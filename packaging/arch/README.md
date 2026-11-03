@@ -43,6 +43,11 @@ necessária para preservar os executáveis PyInstaller e o payload validado.
 
 ## Validação
 
+Teste aprovado em 02/11/2026 na [execução 41547530593](https://github.com/cliqueprojeto/GCP-Yt-Rebalance/actions/runs/41547530593).
+O container de runtime separado não tinha Python nem FFmpeg instalados, e o app
+também recebeu PATH isolado. Pacote: 395.778.658 bytes; SHA-256:
+`2795ecf933c1677746395d44fa2e21ef009e2702326be46cd894535b504d1b0d`.
+
 O workflow `arch-private.yml` constrói com makepkg sem root, instala com pacman,
 confere os hashes dos arquivos originais, testa interface via Xvfb, conversões
 WAV/PCM/FLAC/MP3, quatro stems e remoção. O resultado real e o digest da imagem
