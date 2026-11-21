@@ -117,7 +117,7 @@ jobs:
       - name: Instalador Windows e teste de instalação
         if: runner.os == 'Windows'
         run: |
-          .tools/nsis-3.12/makensis.exe /V2 "/DVERSION=$VERSION" scripts/windows-installer.nsi
+          MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*" .tools/nsis-3.12/makensis.exe -V2 "-DVERSION=$VERSION" scripts/windows-installer.nsi
           python scripts/smoke_installer.py
       - name: Empacotar DMG ou DEB + RPM
         if: runner.os != 'Windows'
