@@ -35,6 +35,9 @@ jobs:
           TAG="v${VERSION}"
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft >/dev/null 2>&1; then
             echo "Release $TAG já existe; os arquivos serão substituídos."
+            if [ "$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft -q .isDraft)" = true ]; then
+              gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA"
+            fi
           else
             gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --draft --target "$GITHUB_SHA" \
               --title "GCP Yt Rebalance ${VERSION}" --notes-file "docs/release-notes/${TAG}.md"
