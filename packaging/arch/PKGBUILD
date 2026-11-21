@@ -6,7 +6,7 @@ pkgrel=1
 pkgdesc='GCP Yt Rebalance: downloads, separação de voz e instrumentos e conversão de áudio com processamento local'
 arch=('x86_64')
 url='https://gestaoculturalpro.com.br'
-license=('LicenseRef-Proprietary')
+license=('GPL-3.0-or-later')
 depends=('glibc' 'gcc-libs' 'libx11' 'libxext' 'libxrender' 'libxft'
          'fontconfig' 'freetype2' 'libxcb' 'zlib' 'xdg-utils' 'libxcrypt-compat')
 optdepends=('xorg-xwayland: interface em sessões Wayland')
@@ -19,7 +19,7 @@ source=("${_deb}" 'NOTICE.txt')
 noextract=("${_deb}")
 # O pipeline de release substitui SKIP pelo SHA-256 do .deb gerado.
 sha256sums=('SKIP'
-            'e307b7b0ed551adec20787d0dc1ed6e64f4e7cc75d5c7324a5ff8528b913b51a')
+            '69477b531a5f59516341eec06e445376e9a836d14484abf1af595982c51a7797')
 
 package() {
   local payload

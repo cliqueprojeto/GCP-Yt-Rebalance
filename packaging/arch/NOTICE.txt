@@ -1,8 +1,9 @@
 GCP Yt Rebalance
-Desenvolvido por Bruno Albertini — Gestão Cultural Pro
+Desenvolvido por Bruno Albertini | Gestão Cultural Pro
 https://gestaoculturalpro.com.br
 
-Todos os direitos sobre o aplicativo pertencem ao titular.
+Licença: GNU General Public License v3.0 ou posterior (GPL-3.0-or-later).
+Código-fonte: https://github.com/cliqueprojeto/GCP-Yt-Rebalance
+
 Os componentes de terceiros mantêm suas próprias licenças e avisos, incluídos em
 /opt/gcp-yt-rebalance/_internal/vendor/notices.
-Este aviso não substitui nem restringe as licenças desses componentes.

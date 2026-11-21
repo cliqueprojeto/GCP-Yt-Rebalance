@@ -14,6 +14,8 @@ _version_file.write_text((root / 'apps/desktop/windows-version.txt').read_text(e
 datas = [
     (str(root / 'assets/branding'), 'assets/branding'),
     (str(root / 'assets/fonts'), 'assets/fonts'),
+    (str(root / 'LICENSE'), '.'),
+    (str(root / 'THIRD_PARTY_NOTICES.md'), '.'),
     (str(root / 'assets/support'), 'assets/support'),
     (str(root / 'models/weights/955717e8.safetensors'), 'models/weights'),
     (str(root / 'vendor/ffmpeg'), 'vendor/ffmpeg'),

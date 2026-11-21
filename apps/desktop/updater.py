@@ -18,7 +18,8 @@ from urllib.request import Request, urlopen
 
 REPOSITORY = "cliqueprojeto/GCP-Yt-Rebalance"
 API_LATEST = f"https://api.github.com/repos/{REPOSITORY}/releases/latest"
-RELEASES_PAGE = f"https://github.com/{REPOSITORY}/releases"
+REPOSITORY_PAGE = f"https://github.com/{REPOSITORY}"
+RELEASES_PAGE = f"{REPOSITORY_PAGE}/releases"
 USER_AGENT = "GCP-Yt-Rebalance-Updater"
 MAX_BYTES = 4 * 1024 ** 3
 

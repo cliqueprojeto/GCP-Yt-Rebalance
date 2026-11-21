@@ -42,7 +42,7 @@ def build_rpm(stage):
 Version: {VERSION}
 Release: 1
 Summary: Audio, video and karaoke toolkit with local processing
-License: LicenseRef-Proprietary
+License: GPL-3.0-or-later
 URL: https://gestaoculturalpro.com.br
 Packager: Bruno Albertini
 Vendor: Gestão Cultural Pro

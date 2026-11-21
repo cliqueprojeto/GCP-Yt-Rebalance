@@ -47,6 +47,7 @@ PHASES = {"Convertendo": "phase.converting", "Verificando arquivo": "phase.check
           "Separando no dispositivo CPU": "phase.separating", "Concluído": "phase.done", "Link analisado": "phase.link_done",
           "Erro": "phase.error", "Buscando informações do link": "phase.inspecting", "Fonte identificada": "phase.source_ok",
           "Baixando mídia": "phase.downloading"}
+UPDATE_FREQUENCIES = {"startup": 0, "daily": 86400, "weekly": 7 * 86400, "biweekly": 14 * 86400, "monthly": 30 * 86400, "never": None}
 AUDIO_TYPES = "*.wav *.mp3 *.flac *.m4a *.aac *.ogg *.opus *.mp4 *.mkv *.mov *.webm *.avi"
 
 
@@ -95,6 +96,7 @@ class App:
         self.rate, self.bitrate, self.threads = tk.StringVar(value="44100"), tk.StringVar(value="192"), tk.StringVar(value="2")
         self.url, self.mode, self.resolution = tk.StringVar(), tk.StringVar(value="audio"), tk.StringVar(value="Melhor disponível")
         self.motion, self.auto_update = tk.BooleanVar(value=True), tk.BooleanVar(value=True)
+        self.update_frequency, self.last_update_check = tk.StringVar(value="startup"), 0.0
         self.language, self.appearance = tk.StringVar(value=i18n.detect()), tk.StringVar(value="dark")
         self.saved_quality = quality_defaults()
         self.status, self.detail, self.eta = tk.StringVar(), tk.StringVar(), tk.StringVar()
@@ -112,7 +114,7 @@ class App:
         root.bind("<Configure>", self.resize, add="+")
         self.build()
         root.after(400, self.set_window_icon); root.after(120, self.poll); root.after(40, self.animate)
-        if self.auto_update.get() and not testing:
+        if self.update_due() and not testing:
             root.after(2500, lambda: self.check_updates(manual=False))
 
     # ───────────────────────────── estrutura ─────────────────────────────
@@ -322,7 +324,7 @@ class App:
             if icon: self.tile(head, icon, tint, 36, 18, 10).pack(side="left", padx=(0, 12))
             box = ctk.CTkFrame(head, fg_color="transparent"); box.pack(side="left", fill="x", expand=True)
             ctk.CTkLabel(box, text=title, font=font(16, "bold"), text_color=T.TEXT, anchor="w").pack(fill="x")
-            if subtitle: self.label(box, subtitle, font=font(12), text_color=T.MUTED).pack(fill="x", pady=(1, 0))
+            if subtitle: self.label(box, subtitle, ratio=.93 if parent is None else .45, font=font(12), text_color=T.MUTED).pack(fill="x", pady=(1, 0))
         elif subtitle:
             self.label(card, subtitle).pack(fill="x", padx=22, pady=(16, 6))
         self.card_count += 1
@@ -702,8 +704,9 @@ class App:
         ctk.CTkLabel(body, text=t("upd.current", v=VERSION), font=font(13, "bold"), text_color=T.TEXT, anchor="w").pack(fill="x", padx=14, pady=(12, 0))
         self.update_status_label = ctk.CTkLabel(body, text=self.update_status_text(), font=font(12), text_color=T.MUTED, anchor="w", justify="left")
         self.update_status_label.pack(fill="x", padx=14, pady=(2, 12))
-        ctk.CTkSwitch(card, text=t("upd.auto"), variable=self.auto_update, progress_color=T.ACCENT, text_color=T.TEXT, font=font(12),
-                      command=lambda: self.save_settings(quiet=True)).pack(anchor="w", padx=22, pady=(8, 8))
+        ctk.CTkLabel(card, text=t("upd.frequency"), font=font(12, "bold"), text_color=T.TEXT_2, anchor="w").pack(fill="x", padx=22, pady=(10, 6))
+        self.choice(card, self.update_frequency, list(UPDATE_FREQUENCIES), {c: t(f"upd.freq.{c}") for c in UPDATE_FREQUENCIES},
+                    command=lambda _: self.save_settings(quiet=True)).pack(fill="x", padx=22, pady=(0, 6))
         row = ctk.CTkFrame(card, fg_color="transparent"); row.pack(fill="x", padx=22, pady=(8, 22))
         self.button(row, t("btn.check_updates"), lambda: self.check_updates(manual=True), icon="refresh").pack(side="left")
         if self.update_info:
@@ -795,6 +798,10 @@ class App:
         row = ctk.CTkFrame(card, fg_color="transparent"); row.pack(fill="x", padx=22, pady=(10, 22))
         self.button(row, "gestaoculturalpro.com.br  ↗", self.brand, icon="link").pack(side="left")
         self.button(row, t("nav.support"), lambda: self.page("support"), icon="heart", style="primary").pack(side="left", padx=10)
+        card = self.card(t("about.license.title"), t("about.license.text"), icon="shield", tint="blue")
+        row = ctk.CTkFrame(card, fg_color="transparent"); row.pack(fill="x", padx=22, pady=(10, 22))
+        self.button(row, t("btn.view_license") + "  ↗", lambda: webbrowser.open(updater.REPOSITORY_PAGE + "/blob/main/LICENSE", new=2), icon="file").pack(side="left")
+        self.button(row, t("btn.source_code") + "  ↗", lambda: webbrowser.open(updater.REPOSITORY_PAGE, new=2), icon="link", style="ghost").pack(side="left", padx=10)
 
     # ───────────────────────────── fila e histórico ─────────────────────────────
     def queue_page(self):
@@ -824,7 +831,9 @@ class App:
             state.grid(row=0, column=2, rowspan=2, padx=(10, 0))
             bar = ctk.CTkProgressBar(card, height=6, progress_color=T.SUCCESS if state_key == "done" else T.ACCENT, fg_color=T.TRACK)
             bar.set(task.get("progress", 0) / 100); bar.pack(fill="x", padx=18, pady=(6, 12))
-            row = ctk.CTkFrame(card, fg_color="transparent"); row.pack(fill="x", padx=18, pady=(0, 16))
+            has_action = state_key in ("waiting", "error", "cancelled") or bool(task.get("destination"))
+            row = ctk.CTkFrame(card, fg_color="transparent", height=1)
+            row.pack(fill="x", padx=18, pady=(0, 16) if has_action else (0, 4))
             if state_key == "waiting": self.button(row, t("btn.remove"), lambda t_=task: self.remove_task(t_), icon="trash", height=32, style="ghost").pack(side="left")
             elif state_key in ("error", "cancelled"): self.button(row, t("btn.retry"), lambda t_=task: self.retry(t_), icon="refresh", height=32).pack(side="left")
             elif task.get("destination"): self.button(row, t("btn.open_folder"), lambda t_=task: self.open_folder(t_["destination"]), icon="folder", height=32).pack(side="left")
@@ -1106,6 +1115,10 @@ class App:
             if isinstance(destination, str) and destination and Path(destination).is_dir(): self.destination.set(destination)
             self.motion.set(bool(settings.get("motion", True)))
             self.auto_update.set(bool(settings.get("auto_update", True)))
+            frequency = settings.get("update_frequency", "startup" if self.auto_update.get() else "never")
+            self.update_frequency.set(frequency if frequency in UPDATE_FREQUENCIES else "startup")
+            try: self.last_update_check = float(settings.get("last_update_check", 0))
+            except (TypeError, ValueError): self.last_update_check = 0.0
             if settings.get("language") in i18n.NAMES: self.language.set(settings["language"])
             if settings.get("appearance") in ("system", "light", "dark"): self.appearance.set(settings["appearance"])
             self.saved_quality = quality_defaults(settings.get("quality"))
@@ -1118,7 +1131,8 @@ class App:
                 self.saved_quality = quality_defaults({key: getattr(self, key).get() for key in FACTORY_QUALITY})
                 for key, value in self.saved_quality.items(): getattr(self, key).set(value)
             atomic_json(self.state_dir / "settings.json", dict(schema=3, destination=self.destination.get(), motion=self.motion.get(),
-                        quality=self.saved_quality, language=self.language.get(), appearance=self.appearance.get(), auto_update=self.auto_update.get()))
+                        quality=self.saved_quality, language=self.language.get(), appearance=self.appearance.get(), auto_update=self.update_frequency.get() != "never",
+                        update_frequency=self.update_frequency.get(), last_update_check=self.last_update_check))
             if not quiet: self.set_status("status.saved")
         except OSError:
             if not quiet: self.dialog(t("err.prefs.title"), t("err.prefs.text"))
@@ -1130,7 +1144,7 @@ class App:
         for key, value in FACTORY_QUALITY.items(): getattr(self, key).set(value)
         music = Path.home() / "Music"
         self.destination.set(str(music if music.is_dir() else Path.home()))
-        self.motion.set(True); self.auto_update.set(True); self.operation.set("both"); self.mode.set("audio")
+        self.motion.set(True); self.auto_update.set(True); self.update_frequency.set("startup"); self.operation.set("both"); self.mode.set("audio")
         self.subtitle_selection = {}; self.subtitle_url = None
         self.save_settings(); self.page("settings")
         self.set_status("status.factory")
@@ -1178,8 +1192,14 @@ class App:
         label = getattr(self, "update_status_label", None)
         if label is not None and label.winfo_exists(): label.configure(text=self.update_status_text())
 
+    def update_due(self):
+        interval = UPDATE_FREQUENCIES.get(self.update_frequency.get())
+        if interval is None: return False
+        return time.time() - self.last_update_check >= interval
+
     def check_updates(self, manual=False):
         if self.update_state in ("checking", "downloading"): return
+        self.last_update_check = time.time(); self.save_settings(quiet=True)
         self.update_state = "checking"; self.refresh_update_pill()
         def work():
             try:
