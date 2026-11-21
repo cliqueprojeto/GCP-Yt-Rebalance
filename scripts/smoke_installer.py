@@ -11,6 +11,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/desktop"))
 from process_job import Job
+from runtime import VERSION
 
 
 def digest(path):
@@ -27,7 +28,7 @@ def main():
     output.mkdir(exist_ok=False)
     target = (output / "installed").resolve()
     assert target.is_relative_to((ROOT / "artifacts").resolve()) and not target.exists()
-    installer = ROOT / "dist/GCP Yt Rebalance Setup 0.3.0.exe"
+    installer = ROOT / f"dist/GCP-Yt-Rebalance-{VERSION}-Windows-x64-Setup.exe"
     # Unicode do instalador precisa ser correto também fora da UI do aplicativo.
     import pefile
     metadata={}
@@ -38,10 +39,11 @@ def main():
     assert "Gestão Cultural Pro" in metadata[b"LegalCopyright"].decode("utf-8")
     result = subprocess.run([str(installer), "/S", "/TESTMODE", f"/D={target}"], timeout=300)
     assert result.returncode == 0, result.returncode
-    assert (target / "gcp-install.marker").read_text() == "GCP Yt Rebalance 0.3.0"
-    original = ROOT / "dist/v0.3/GCP Yt Rebalance"
+    assert (target / "gcp-install.marker").read_text() == "GCP Yt Rebalance"
+    original = ROOT / "dist/windows/GCP Yt Rebalance"
     files = list(p for p in original.rglob("*") if p.is_file())
     for file in files:
+        if file.name == "gcp-install.marker": continue
         assert digest(file) == digest(target / file.relative_to(original)), file
     shutil.copyfile(ROOT / "artifacts/v03-final-offline/fixture.wav", output / "fixture.wav")
     environment = os.environ.copy()
@@ -61,7 +63,7 @@ def main():
     assert check["status"] == "passed" and check["gui_queue_conversion"] and check["history_open_routing"]
     # Destino absoluto verificado acima; o desinstalador remove apenas seu próprio payload.
     assert target.is_relative_to((ROOT / "artifacts").resolve())
-    assert (target / "gcp-install.marker").read_text() == "GCP Yt Rebalance 0.3.0"
+    assert (target / "gcp-install.marker").read_text() == "GCP Yt Rebalance"
     uninstall = subprocess.run([str(target / "Desinstalar.exe"), "/S", "/TESTMODE", f"_?={target}"], timeout=120)
     assert uninstall.returncode == 0
     assert not (target / "GCP Yt Rebalance.exe").exists()

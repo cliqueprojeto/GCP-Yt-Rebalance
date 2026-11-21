@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 
 PRODUCT = "GCP Yt Rebalance"
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 MODEL_SHA256 = "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd"
 BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[2]))
 

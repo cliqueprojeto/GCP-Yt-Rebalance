@@ -1,0 +1,8 @@
+GCP Yt Rebalance
+Desenvolvido por Bruno Albertini — Gestão Cultural Pro
+https://gestaoculturalpro.com.br
+
+Todos os direitos sobre o aplicativo pertencem ao titular.
+Os componentes de terceiros mantêm suas próprias licenças e avisos, incluídos em
+/opt/gcp-yt-rebalance/_internal/vendor/notices.
+Este aviso não substitui nem restringe as licenças desses componentes.

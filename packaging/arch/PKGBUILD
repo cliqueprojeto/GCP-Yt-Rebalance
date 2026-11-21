@@ -1,12 +1,12 @@
-# Receita local de avaliação privada. Nenhuma credencial é lida ou armazenada.
-# Maintainer: Bruno Albertini
+# Maintainer: Bruno Albertini <https://gestaoculturalpro.com.br>
+# Reempacota o .deb oficial da mesma versão (payload idêntico ao validado).
 pkgname=gcp-yt-rebalance-bin
-pkgver=0.3.0
+pkgver=0.4.0
 pkgrel=1
-pkgdesc='GCP Yt Rebalance: conversão e separação de áudio CPU local'
+pkgdesc='GCP Yt Rebalance: downloads, separação de voz e instrumentos e conversão de áudio com processamento local'
 arch=('x86_64')
 url='https://gestaoculturalpro.com.br'
-license=('LicenseRef-Private-Evaluation-Pending')
+license=('LicenseRef-Proprietary')
 depends=('glibc' 'gcc-libs' 'libx11' 'libxext' 'libxrender' 'libxft'
          'fontconfig' 'freetype2' 'libxcb' 'zlib' 'xdg-utils' 'libxcrypt-compat')
 optdepends=('xorg-xwayland: interface em sessões Wayland')
@@ -15,22 +15,17 @@ conflicts=('gcp-yt-rebalance')
 # strip/debug podem destruir o arquivo interno dos executáveis PyInstaller.
 options=('!strip' '!debug')
 _deb="gcp-yt-rebalance_${pkgver}_amd64.deb"
-source=("${_deb}" 'NOTICE-PRIVATE.txt')
+source=("${_deb}" 'NOTICE.txt')
 noextract=("${_deb}")
-sha256sums=('443518f3d56ff929f0cbe4d2d3b6402fce40f100bd94a0cf27cdd09a03d71dcc'
-            '344af6608890fe15552b23ac96986f6f92d5835b2753da80d237680f9493cb56')
+# O pipeline de release substitui SKIP pelo SHA-256 do .deb gerado.
+sha256sums=('SKIP'
+            'e307b7b0ed551adec20787d0dc1ed6e64f4e7cc75d5c7324a5ff8528b913b51a')
 
 package() {
   local payload
   payload=$(bsdtar -tf "${srcdir}/${_deb}" | grep -E '^data[.]tar([.](xz|zst|gz|bz2))?$')
   [[ -n "$payload" && "$payload" != *$'\n'* ]] || return 1
   (set -o pipefail; bsdtar -xOf "${srcdir}/${_deb}" "$payload" | bsdtar -xf - -C "${pkgdir}") || return 1
-  install -d "${pkgdir}/usr/bin"
-  printf '%s\n' '#!/bin/sh' 'exec "/opt/gcp-yt-rebalance/GCP Yt Rebalance" "$@"' \
-    > "${pkgdir}/usr/bin/gcp-yt-rebalance"
-  chmod 755 "${pkgdir}/usr/bin/gcp-yt-rebalance"
-  sed -i 's|^Exec=.*|Exec=gcp-yt-rebalance|' \
-    "${pkgdir}/usr/share/applications/gcp-yt-rebalance.desktop"
-  install -Dm644 "${srcdir}/NOTICE-PRIVATE.txt" \
-    "${pkgdir}/usr/share/licenses/${pkgname}/NOTICE-PRIVATE.txt"
+  test -x "${pkgdir}/usr/bin/gcp-yt-rebalance"
+  install -Dm644 "${srcdir}/NOTICE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/NOTICE.txt"
 }

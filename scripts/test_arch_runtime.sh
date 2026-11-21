@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd /work
+: "${VERSION:?defina VERSION}"
 pacman -Syu --noconfirm --needed xorg-server-xvfb xorg-xauth ttf-dejavu jq
-pacman -U --noconfirm dist/gcp-yt-rebalance-bin-0.3.0-1-x86_64.pkg.tar.zst
+pacman -U --noconfirm "dist/gcp-yt-rebalance-bin-${VERSION}-1-x86_64.pkg.tar.zst"
 cat /etc/os-release > artifacts/arch/os-release.txt
 pacman -Q > artifacts/arch/system-packages.txt
 pacman -Q python ffmpeg > artifacts/arch/external-runtime-check.txt 2>&1 || true
@@ -46,4 +47,4 @@ pacman -R --noconfirm gcp-yt-rebalance-bin
 test ! -e /usr/bin/gcp-yt-rebalance
 test ! -e /opt/gcp-yt-rebalance
 jq -n --argjson python_present "$python_present" \
-  '{status:"passed",private:true,aur_published:false,makepkg_nonroot:true,payload_hashes_verified:true,desktop_entry_valid:true,installed_gui:true,conversions:["WAV","PCM","FLAC","MP3"],stems:true,uninstalled:true,path_isolated:true,runtime_python_package_present:$python_present,fixture:"own synthetic signal; not musical quality validation"}' > artifacts/arch/summary.json
+  '{status:"passed",aur_published:false,makepkg_nonroot:true,payload_hashes_verified:true,desktop_entry_valid:true,installed_gui:true,conversions:["WAV","PCM","FLAC","MP3"],stems:true,uninstalled:true,path_isolated:true,runtime_python_package_present:$python_present,fixture:"own synthetic signal; not musical quality validation"}' > artifacts/arch/summary.json

@@ -3,25 +3,28 @@
 !include "x64.nsh"
 !include "FileFunc.nsh"
 !include "LogicLib.nsh"
+!ifndef VERSION
+  !define VERSION "0.4.0"
+!endif
 Name "GCP Yt Rebalance"
-OutFile "..\dist\GCP Yt Rebalance Setup 0.3.0.exe"
+OutFile "..\dist\GCP-Yt-Rebalance-${VERSION}-Windows-x64-Setup.exe"
 InstallDir "$LOCALAPPDATA\Programs\GCP Yt Rebalance"
 InstallDirRegKey HKCU "Software\GestaoCulturalPro\GCPYtRebalance" "InstallDir"
 RequestExecutionLevel user
 ManifestDPIAware true
-; Pacote de teste: compressão rápida e extração independente por arquivo.
-SetCompressor zlib
-VIProductVersion "0.3.0.0"
+SetCompressor lzma
+VIProductVersion "${VERSION}.0"
 VIAddVersionKey /LANG=1046 "ProductName" "GCP Yt Rebalance"
 VIAddVersionKey /LANG=1046 "CompanyName" "Bruno Albertini"
 VIAddVersionKey /LANG=1046 "FileDescription" "Instalador do GCP Yt Rebalance"
-VIAddVersionKey /LANG=1046 "FileVersion" "0.3.0"
+VIAddVersionKey /LANG=1046 "FileVersion" "${VERSION}"
+VIAddVersionKey /LANG=1046 "ProductVersion" "${VERSION}"
 VIAddVersionKey /LANG=1046 "LegalCopyright" "Bruno Albertini — Gestão Cultural Pro"
 !define MUI_ICON "..\assets\branding\taskbar.ico"
 !define MUI_UNICON "..\assets\branding\taskbar.ico"
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE "GCP Yt Rebalance"
-!define MUI_WELCOMEPAGE_TEXT "Áudio, vídeo e karaokê no seu computador.$\r$\n$\r$\nEste instalador inclui o motor CPU, modelo, FFmpeg/ffprobe, downloader e runtime JavaScript.$\r$\n$\r$\nDesenvolvido por Bruno Albertini$\r$\nGestão Cultural Pro"
+!define MUI_WELCOMEPAGE_TEXT "Áudio, vídeo e karaokê no seu computador.$\r$\n$\r$\nTudo incluído: motor de separação, modelo, FFmpeg/ffprobe, downloader e runtime. Nada para baixar por fora.$\r$\n$\r$\nDesenvolvido por Bruno Albertini$\r$\nGestão Cultural Pro"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_COMPONENTS
@@ -54,19 +57,33 @@ Section "GCP Yt Rebalance (completo)" Core
   SectionIn RO
   SetOutPath "$INSTDIR"
   ClearErrors
-  File /r "..\dist\v0.3\GCP Yt Rebalance\*.*"
+  ; Atualização: aguarda o aplicativo anterior fechar (até 10 s).
+  StrCpy $2 0
+  wait_app:
+  ClearErrors
+  Delete "$INSTDIR\GCP Yt Rebalance.exe"
+  ${If} ${Errors}
+    IntOp $2 $2 + 1
+    ${If} $2 < 20
+      Sleep 500
+      Goto wait_app
+    ${EndIf}
+  ${EndIf}
+  ; Atualização: remove o payload anterior antes de copiar a nova versão.
+  RMDir /r "$INSTDIR\_internal"
+  File /r "..\dist\windows\GCP Yt Rebalance\*.*"
   ${If} ${Errors}
     MessageBox MB_ICONSTOP "Não foi possível copiar todos os componentes. Verifique espaço livre e permissões."
     Abort
   ${EndIf}
   FileOpen $0 "$INSTDIR\gcp-install.marker" w
-  FileWrite $0 "GCP Yt Rebalance 0.3.0"
+  FileWrite $0 "GCP Yt Rebalance"
   FileClose $0
   WriteUninstaller "$INSTDIR\Desinstalar.exe"
   ${If} $TestMode == "0"
     WriteRegStr HKCU "Software\GestaoCulturalPro\GCPYtRebalance" "InstallDir" "$INSTDIR"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\GCPYtRebalance" "DisplayName" "GCP Yt Rebalance"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\GCPYtRebalance" "DisplayVersion" "0.3.0"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\GCPYtRebalance" "DisplayVersion" "${VERSION}"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\GCPYtRebalance" "Publisher" "Bruno Albertini"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\GCPYtRebalance" "InstallLocation" "$INSTDIR"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\GCPYtRebalance" "DisplayIcon" "$INSTDIR\GCP Yt Rebalance.exe"
@@ -107,7 +124,8 @@ Section "Uninstall"
   FileOpen $0 "$INSTDIR\gcp-install.marker" r
   FileRead $0 $1
   FileClose $0
-  ${If} $1 != "GCP Yt Rebalance 0.3.0"
+  StrCpy $1 $1 16
+  ${If} $1 != "GCP Yt Rebalance"
     Abort
   ${EndIf}
   ; Remover somente componentes próprios; saídas, histórico e preferências ficam fora desta pasta.

@@ -55,7 +55,8 @@ def launch():
             root.withdraw()
             app.url.set("ftp://invalid.example/video")
             app.enqueue_download()
-            assert app.dialogs[-1]["title"] == "Não foi possível adicionar o download"
+            from i18n import t as translate
+            assert app.dialogs[-1]["title"] == translate("err.download_add")
             gui_flow=False
             fixture=report.parent/"fixture.wav"
             if fixture.is_file():
@@ -63,21 +64,21 @@ def launch():
                 import time
                 app.files=[str(fixture.resolve())]
                 app.destination.set(str(report.parent))
-                app.operation.set("Somente converter")
+                app.operation.set("convert")
                 app.enqueue_local()
                 deadline=time.monotonic()+90
                 while time.monotonic()<deadline:
                     root.update()
-                    if app.queue and app.queue[-1]["state"] in ("Concluído","Erro"): break
+                    if app.queue and app.queue[-1]["state"] in ("done","error"): break
                     time.sleep(.03)
-                assert app.queue[-1]["state"]=="Concluído", app.dialogs
+                assert app.queue[-1]["state"]=="done", app.dialogs
                 assert app.history[-1]["destination"]
                 opened=[]
                 import gui
                 original_open=gui.open_directory
                 try:
                     gui.open_directory=lambda path:opened.append(str(path))
-                    app.page("Histórico")
+                    app.page("history")
                     app.open_folder(app.history[-1]["destination"])
                     assert opened==[str(Path(app.history[-1]["destination"]))]
                 finally:
@@ -96,9 +97,21 @@ def launch():
             assert app.saved_quality==quality_defaults() and app.bits.get()=="16" and app.history==original_history
             app.url.set("https://www.youtube.com/watch?v=own-test")
             app.metadata=dict(url=app.url.get(),title="Teste local de opções",duration=1,video_available=True,resolutions=[360],playlist=[],subtitles=[dict(language="pt",name="Português",automatic=False),dict(language="en",name="English",automatic=True)])
-            app.page("Downloads"); root.update_idletasks()
+            app.mode.set("audio"); app.page("downloads"); root.update_idletasks()
             assert set(app.subtitle_selection)=={(False,"pt"),(True,"en")}
             checkpoint("preferences and subtitles UI passed")
+            import customtkinter as ctk_check
+            for language in ("en","es","pt"):
+                app.change_language(language); root.update()
+                assert app.title.cget("text")==translate(f"page.{app.current_page}.title")
+            for mode in ("light","dark"):
+                app.set_appearance(mode); root.update()
+                assert ctk_check.get_appearance_mode().lower()==mode
+            app.page("support"); root.update_idletasks()
+            assert (BASE/"assets/support/pix-qr.png").is_file() and (BASE/"assets/fonts/Inter-Regular.otf").is_file()
+            import updater
+            assert updater.is_newer("9.0.0",VERSION) and not updater.is_newer(VERSION,VERSION)
+            checkpoint("languages, themes and support page passed")
             assert hashlib.sha256((BASE/"models/weights/955717e8.safetensors").read_bytes()).hexdigest() == MODEL_SHA256
             tools = {}
             for name in ("ffmpeg","ffprobe"):
@@ -115,7 +128,7 @@ def launch():
                 torch=torch.__version__,numpy=numpy.__version__,soundfile=soundfile.__version__,models_verified=True,
                 pages_constructed=len(NAV),tested_layout_sizes=sizes,custom_error_dialog=True,gui_queue_conversion=gui_flow,
                 history_open_routing=gui_flow,tools=tools)
-            result.update(preferences_save_reload=True,factory_reset_preserves_history=True,subtitle_selection_ui=True)
+            result.update(preferences_save_reload=True,factory_reset_preserves_history=True,subtitle_selection_ui=True,languages=["pt","en","es"],themes=["light","dark"],support_page=True)
             code = 0
         except Exception as error:
             import traceback

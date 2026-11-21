@@ -1,34 +1,54 @@
-# GCP Yt Rebalance
+<p align="center"><img src="assets/branding/icon-128.png" width="96" alt="GCP Yt Rebalance"></p>
 
-Desenvolvido por Bruno Albertini  
-[Gestão Cultural Pro](https://gestaoculturalpro.com.br)
+<h1 align="center">GCP Yt Rebalance</h1>
 
-Aplicativo desktop experimental para importação, download autorizado, conversão e separação local de áudio. Idioma inicial: pt-BR. Sem conta, assinatura ou processamento em nuvem.
+<p align="center">Áudio • Vídeo • Karaokê — baixe, separe e converta com processamento 100% local.<br>
+Desenvolvido por Bruno Albertini | <a href="https://gestaoculturalpro.com.br">Gestão Cultural Pro</a></p>
 
-**Estado: instaladores 0.3.0 reais para teste privado em Windows x64, macOS Intel, macOS ARM64 e Linux amd64 DEB. Os testes nativos de instalação e funcionamento passaram nos runners; o motor ainda não foi aprovado na matriz musical da POC. Mac sem Developer ID/notarização, e testes físicos Intel/M1 e Linux Mint pendentes.**
+## Download
 
-A versão 0.3 unifica logo e ícone, inicia WAV em 16 bits, carrega idiomas de legendas, salva padrões de qualidade e permite restaurar as configurações de fábrica. Mantém downloads, separação CPU, conversões, fila, estimativa, histórico e rolagem. Instalador completo: `dist/GCP Yt Rebalance Setup 0.3.0.exe`. [Instruções e testes 0.3](docs/teste-windows-v03.md). [Pipeline e pendências Mac/Linux](docs/build-multiplataforma.md). As versões anteriores foram preservadas em `dist/`. Player A/B e GPU ainda não estão implementados.
+Baixe a versão mais recente em **[Releases](https://github.com/cliqueprojeto/GCP-Yt-Rebalance/releases/latest)**:
 
-- [Diagnóstico e milestones](docs/diagnostico.md)
-- [Arquitetura proposta](docs/arquitetura.md)
-- [Protocolo e matriz da POC](docs/poc.md)
-- [Identidade visual](assets/branding/README.md)
-- [Resultados e pendências das Fases 0–1](docs/relatorio-fases-0-1.md)
-- [Instaladores Mac/Linux: testes, tamanhos, hashes e instruções](docs/teste-macos-linux-v03.md)
-- [Arch Linux privado: instalar com pacman ou reconstruir com PKGBUILD](packaging/arch/README.md)
-- [Release privada 0.3.0: arquivos, checksums e validação](docs/release-v0.3.0.md)
+| Sistema | Arquivo | Instalação |
+|---|---|---|
+| Windows 10/11 (64 bits) | `…-Windows-x64-Setup.exe` | Dois cliques no instalador |
+| macOS Apple Silicon (M1 ou superior) | `…-macOS-arm64.dmg` | Abra o DMG e arraste para Aplicativos |
+| macOS Intel | `…-macOS-x86_64.dmg` | Abra o DMG e arraste para Aplicativos |
+| Ubuntu, Debian, Mint, Pop!_OS | `…_amd64.deb` | Dois cliques (Central de Programas) ou `sudo apt install ./arquivo.deb` |
+| Fedora, openSUSE, RHEL | `…x86_64.rpm` | Dois cliques ou `sudo dnf install ./arquivo.rpm` |
+| Arch, Manjaro, EndeavourOS | `…pkg.tar.zst` | `sudo pacman -U ./arquivo.pkg.tar.zst` |
 
-## Ferramentas executáveis desta etapa
+Tudo incluído no instalador: motor de separação, modelo, FFmpeg/ffprobe, downloader e runtime. Nada para baixar por fora.
 
-Python de desenvolvimento com Pillow para os ícones; NumPy para métricas. A POC exige dependências de ML isoladas. Essas ferramentas são para desenvolvimento, não requisitos previstos para o usuário final.
+## Recursos
 
-```powershell
-python scripts/branding.py
+- Downloads de áudio, vídeo e legendas (YouTube, Vimeo, SoundCloud, Archive.org e links diretos).
+- Karaokê (remove vocais), acapella e separação em 4 stems na CPU.
+- Conversão WAV, PCM, FLAC e MP3 com profundidade e taxa configuráveis.
+- Fila, histórico local e estimativa de tempo.
+- Tema claro, escuro ou do sistema.
+- Interface em Português, English e Español.
+- Atualizações direto no aplicativo, a partir das releases do GitHub, com verificação SHA-256.
+- Sem conta, assinatura, anúncios ou envio de áudio.
+
+## Apoie o projeto
+
+O aplicativo é gratuito. Se ele ajuda no seu trabalho, apoie pelo app (tela **Apoie o projeto**) ou:
+
+- **PIX:** QR Code dentro do aplicativo
+- **Stripe (internacional):** [donate.stripe.com/fZu4gzeBSfhbd7451F6Ri00](https://donate.stripe.com/fZu4gzeBSfhbd7451F6Ri00)
+
+## Desenvolvimento
+
+```bash
 python -m unittest discover -s tests -v
-python scripts/poc_environment.py
-python scripts/poc_onnx.py --out artifacts/onnx-probe
+python apps/desktop/main.py
 ```
 
-Os scripts não enviam áudio à rede. O teste ONNX usa pesos aleatórios e não mede qualidade de separação. Aquisição de dependências/pesos é uma etapa explícita de desenvolvimento. Nenhum arquivo de música deverá entrar no pacote final sem licença específica.
+Releases: o workflow **Release — GCP Yt Rebalance** (`.github/workflows/desktop-installers.yml`) gera e testa todos os instaladores e publica a release. Ele roda ao enviar uma tag `vX.Y.Z` igual à versão em `apps/desktop/runtime.py`, ou manualmente pela aba Actions.
 
-Licença do aplicativo: pendente de decisão do titular. Não há concessão de licença pública nesta etapa.
+- [Arquitetura](docs/arquitetura.md) • [Build multiplataforma](docs/build-multiplataforma.md) • [Identidade visual](assets/branding/README.md) • [Arch Linux](packaging/arch/README.md)
+
+Fonte Inter incluída sob a SIL Open Font License 1.1 (`assets/fonts/OFL.txt`). Componentes de terceiros mantêm suas licenças, incluídas no pacote em `vendor/notices`.
+
+© Bruno Albertini — Gestão Cultural Pro. Todos os direitos reservados.

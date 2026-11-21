@@ -6,7 +6,11 @@ import subprocess
 from PyInstaller.utils.hooks import collect_data_files, copy_metadata
 
 root=Path(SPECPATH).resolve().parents[1]
+sys.path.insert(0,str(root/'apps/desktop'))
+from runtime import VERSION
 datas=[(str(root/'assets/branding'),'assets/branding'),
+       (str(root/'assets/fonts'),'assets/fonts'),
+       (str(root/'assets/support'),'assets/support'),
        (str(root/'models/weights/955717e8.safetensors'),'models/weights'),
        (str(root/'vendor/notices'),'vendor/notices')]
 datas+=collect_data_files('customtkinter')
@@ -28,8 +32,8 @@ distribution=COLLECT(exe,analysis.binaries,analysis.datas,strip=False,upx=False,
 if sys.platform=='darwin':
     app=BUNDLE(distribution,name='GCP Yt Rebalance.app',icon=str(root/'assets/branding/taskbar.icns'),
         bundle_identifier='br.com.gestaoculturalpro.ytrebalance',
-        info_plist=dict(CFBundleDisplayName='GCP Yt Rebalance',CFBundleShortVersionString='0.3.0',
-            CFBundleVersion='0.3.0',NSHighResolutionCapable=True,
+        info_plist=dict(CFBundleDisplayName='GCP Yt Rebalance',CFBundleShortVersionString=VERSION,
+            CFBundleVersion=VERSION,NSRequiresAquaSystemAppearance=False,NSHighResolutionCapable=True,
             NSHumanReadableCopyright='Desenvolvido por Bruno Albertini — Gestão Cultural Pro'))
     # O sidecar onefile universal contém um arquivo PKG anexado. A redução por
     # lipo durante a coleta de BINARY pode descartá-lo na fatia Intel.
