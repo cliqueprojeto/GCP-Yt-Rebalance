@@ -18,7 +18,31 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  draft:
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Rascunho da release (recebe os instaladores; não usa a cota de artefatos)
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(python3 -c 'import sys; sys.path.insert(0,"apps/desktop"); from runtime import VERSION; print(VERSION)')
+          TAG="v${VERSION}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft >/dev/null 2>&1; then
+            echo "Release $TAG já existe; os arquivos serão substituídos."
+          else
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --draft --target "$GITHUB_SHA" \
+              --title "GCP Yt Rebalance ${VERSION}" --notes-file "docs/release-notes/${TAG}.md"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
   build:
+    needs: draft
     strategy:
       fail-fast: false
       matrix:
@@ -113,40 +137,31 @@ jobs:
         run: python scripts/smoke_dmg.py
       - name: Checksums dos instaladores
         run: python scripts/hash_installers.py
-      - name: Guardar instaladores
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: ${{ matrix.id }}
-          if-no-files-found: error
-          retention-days: 14
-          compression-level: 0
-          path: |
-            dist/*Setup*.exe
-            dist/*.dmg
-            dist/*.deb
-            dist/*.rpm
-            dist/*.sha256
-            artifacts/ci/
-            artifacts/v03-final-offline/health.json
-            artifacts/v03-final-offline/summary.json
-            artifacts/v03-final-offline/fixture.wav
-            artifacts/v03-final-subtitles/summary.json
-            artifacts/v03-final-downloads/summary.json
-            artifacts/v03-installer/summary.json
-            artifacts/installed-linux/health.json
-            artifacts/installed-macos/health.json
+      - name: Enviar instaladores ao rascunho da release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.draft.outputs.tag }}
+        run: |
+          shopt -s nullglob
+          files=(dist/*Setup*.exe dist/*.dmg dist/*.deb dist/*.rpm dist/*.sha256)
+          test ${#files[@]} -gt 0
+          if [ "$RUNNER_OS" = Linux ]; then
+            mkdir -p evidence
+            cp artifacts/ci/native-payload.json artifacts/v03-final-offline/fixture.wav evidence/
+            (cd evidence && zip -q ../ci-evidence-linux.zip native-payload.json fixture.wav)
+            files+=(ci-evidence-linux.zip)
+          fi
+          for attempt in 1 2 3 4; do
+            gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" --clobber "${files[@]}" && break
+            test "$attempt" -lt 4; sleep $((attempt * 20))
+          done
       - name: Diagnósticos em caso de falha
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: diagnosticos-${{ matrix.id }}
-          retention-days: 7
-          path: |
-            artifacts/**/*.json
-            build/**/warn-*.txt
+        run: |
+          find artifacts -name '*.json' -size -200k -print -exec tail -c 4000 {} \; 2>/dev/null || true
 
   linux-install:
-    needs: build
+    needs: [draft, build]
     strategy:
       fail-fast: false
       matrix:
@@ -156,121 +171,82 @@ jobs:
           - { image: 'debian:12', kind: deb }
           - { image: 'debian:13', kind: deb }
           - { image: 'fedora:42', kind: rpm }
-    runs-on: ubuntu-22.04
-    container: ${{ matrix.image }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
     steps:
-      - name: Preparar bibliotecas para as ações oficiais
-        shell: bash
-        run: |
-          if command -v apt-get >/dev/null; then apt-get update && apt-get install -y ca-certificates libstdc++6
-          else dnf install -y ca-certificates libstdc++ findutils; fi
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          name: linux-amd64
-          path: package
-      - name: Máquina limpa, sem Python, FFmpeg ou modelo pré-instalados
-        shell: bash
+          persist-credentials: false
+      - name: Baixar pacote do rascunho da release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.draft.outputs.tag }}
         run: |
-          if [ "${{ matrix.kind }}" = deb ]; then
-            apt-get install -y xvfb xauth fonts-dejavu-core jq
-            apt-get install -y ./package/dist/gcp-yt-rebalance_*_amd64.deb
-          else
-            dnf install -y xorg-x11-server-Xvfb xorg-x11-xauth dejavu-sans-fonts jq which
-            dnf install -y ./package/dist/gcp-yt-rebalance-*.x86_64.rpm
-          fi
-          jq -r '.files[] | select(has("sha256")) | "\(.sha256)  \(.path)"' package/artifacts/ci/native-payload.json > /tmp/rebalance-payload.sha256
-          (cd /opt/gcp-yt-rebalance && sha256sum -c --quiet /tmp/rebalance-payload.sha256)
-          mkdir -p /tmp/rebalance-check
-          cp package/artifacts/v03-final-offline/fixture.wav /tmp/rebalance-check/fixture.wav
-          timeout 300s xvfb-run -a gcp-yt-rebalance --self-test /tmp/rebalance-check/health.json
-          jq -e '.status == "passed" and .gui_queue_conversion and .preferences_save_reload and .support_page' /tmp/rebalance-check/health.json
-          for format in WAV PCM FLAC MP3; do
-            mkdir -p "/tmp/rebalance-check/$format"
-            jq -n --arg format "$format" '{source:"/tmp/rebalance-check/fixture.wav",destination:"/tmp/rebalance-check",operation:"convert",format:$format,bits:16,rate:44100,bitrate:192,threads:2,id:"0123456789abcdef0123456789abcdef"}' > "/tmp/rebalance-check/$format/request.json"
-            timeout 240s "/opt/gcp-yt-rebalance/GCP Yt Rebalance" --worker "/tmp/rebalance-check/$format/request.json"
-          done
-          mkdir -p /tmp/rebalance-check/stems
-          jq '.operation="stems" | .format="WAV"' /tmp/rebalance-check/WAV/request.json > /tmp/rebalance-check/stems/request.json
-          timeout 300s "/opt/gcp-yt-rebalance/GCP Yt Rebalance" --worker /tmp/rebalance-check/stems/request.json
-          if [ "${{ matrix.kind }}" = deb ]; then apt-get remove -y gcp-yt-rebalance; else dnf remove -y gcp-yt-rebalance; fi
-          test ! -e /opt/gcp-yt-rebalance/_internal
+          mkdir -p pkg/evidence
+          pattern=$([ "${{ matrix.kind }}" = deb ] && echo '*_amd64.deb' || echo '*.x86_64.rpm')
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir pkg --pattern "$pattern" --pattern ci-evidence-linux.zip
+          unzip -q pkg/ci-evidence-linux.zip -d pkg/evidence
+      - name: Instalar e testar em ${{ matrix.image }} limpo (sem Python, FFmpeg ou modelo)
+        run: docker run --rm --shm-size=2g --volume "$PWD:/work" "${{ matrix.image }}" bash /work/scripts/test_linux_package.sh "${{ matrix.kind }}"
 
   arch:
-    needs: build
+    needs: [draft, build]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: linux-amd64
-          path: package
       - name: Construir e testar no Arch Linux oficial
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.draft.outputs.tag }}
         run: |
-          VERSION=$(python3 -c 'import sys; sys.path.insert(0,"apps/desktop"); from runtime import VERSION; print(VERSION)')
+          VERSION="${TAG#v}"
           mkdir -p dist artifacts/arch artifacts/arch-input
-          cp "package/dist/gcp-yt-rebalance_${VERSION}_amd64.deb" dist/
-          cp package/artifacts/ci/native-payload.json package/artifacts/v03-final-offline/fixture.wav artifacts/arch-input/
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir dist --pattern "gcp-yt-rebalance_${VERSION}_amd64.deb"
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir artifacts --pattern ci-evidence-linux.zip
+          unzip -q artifacts/ci-evidence-linux.zip -d artifacts/arch-input
           docker pull archlinux:base-devel
           docker run --rm --shm-size=2g -e VERSION="$VERSION" --volume "$PWD:/work" archlinux:base-devel bash /work/scripts/build_arch_ci.sh
           docker pull archlinux:base
           docker run --rm --shm-size=2g -e VERSION="$VERSION" --volume "$PWD:/work" archlinux:base bash /work/scripts/test_arch_runtime.sh
           sudo chown -R "$(id -u):$(id -g)" dist artifacts
-      - name: Guardar pacote Arch
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: archlinux-x86_64
-          retention-days: 14
-          compression-level: 0
-          if-no-files-found: error
-          path: |
-            dist/*.pkg.tar.zst
-            dist/*.pkg.tar.zst.sha256
-            artifacts/arch/summary.json
+          gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" --clobber dist/*.pkg.tar.zst dist/*.pkg.tar.zst.sha256
       - name: Diagnóstico de falha
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: diagnosticos-archlinux
-          path: artifacts/arch/
+        run: cat artifacts/arch/*.txt 2>/dev/null | tail -100 || true
 
   release:
-    needs: [build, linux-install, arch]
-    if: ${{ startsWith(github.ref, 'refs/tags/') || inputs.publish }}
+    needs: [draft, build, linux-install, arch]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          path: collected
-      - name: Reunir instaladores e checksums
+      - name: Conferir instaladores, gerar SHA256SUMS e publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.draft.outputs.tag }}
+          PUBLISH: ${{ startsWith(github.ref, 'refs/tags/') || inputs.publish }}
         run: |
-          VERSION=$(python3 -c 'import sys; sys.path.insert(0,"apps/desktop"); from runtime import VERSION; print(VERSION)')
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          VERSION="${TAG#v}"
+          gh release delete-asset "$TAG" ci-evidence-linux.zip --repo "$GITHUB_REPOSITORY" --yes || true
           mkdir -p release
-          find collected -path '*/dist/*' -type f \( -name '*Setup.exe' -o -name '*.dmg' -o -name '*.deb' -o -name '*.rpm' -o -name '*.pkg.tar.zst' -o -name '*.sha256' \) -exec cp {} release/ \;
-          ls -la release
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir release --pattern '*'
+          rm -f release/SHA256SUMS.txt
           for name in "GCP-Yt-Rebalance-${VERSION}-Windows-x64-Setup.exe" "GCP-Yt-Rebalance-${VERSION}-macOS-arm64.dmg" \
                       "GCP-Yt-Rebalance-${VERSION}-macOS-x86_64.dmg" "gcp-yt-rebalance_${VERSION}_amd64.deb" \
                       "gcp-yt-rebalance-${VERSION}-1.x86_64.rpm" "gcp-yt-rebalance-bin-${VERSION}-1-x86_64.pkg.tar.zst"; do
             test -s "release/$name"
             (cd release && sha256sum -c "$name.sha256")
           done
-          (cd release && sha256sum $(ls | grep -v '\.sha256$') > SHA256SUMS.txt)
-      - name: Publicar release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          TAG="v${VERSION}"
-          NOTES="docs/release-notes/${TAG}.md"
-          test -f "$NOTES"
-          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --title "GCP Yt Rebalance ${VERSION}" --notes-file "$NOTES" --prerelease=false --draft=false --latest
-            gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" --clobber release/*
+          (cd release && sha256sum $(ls | grep -v '\.sha256$') > SHA256SUMS.txt && cat SHA256SUMS.txt)
+          gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" --clobber release/SHA256SUMS.txt
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --notes-file "docs/release-notes/${TAG}.md"
+          if [ "$PUBLISH" = true ]; then
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease=false --latest
+            echo "Release publicada: $TAG"
           else
-            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "GCP Yt Rebalance ${VERSION}" --notes-file "$NOTES" --latest release/*
+            echo "Rascunho pronto para revisão: $TAG"
           fi

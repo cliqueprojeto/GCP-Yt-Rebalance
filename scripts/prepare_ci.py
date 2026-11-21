@@ -42,6 +42,15 @@ def acquire(url,name,expected):
     return target
 
 
+def published_sha256(checksums_url,filename):
+    """SHA-256 publicado pelo próprio projeto na mesma release (HTTPS)."""
+    with urlopen(checksums_url,timeout=60) as source:
+        for line in source.read(1_000_000).decode("utf-8","replace").splitlines():
+            parts=line.split()
+            if len(parts)==2 and parts[1].lstrip("*")==filename and len(parts[0])==64: return parts[0].lower()
+    raise ValueError(f"Checksum publicado não encontrado para {filename}")
+
+
 def unpack(archive,target):
     target=Path(target).resolve(); target.mkdir(parents=True,exist_ok=True)
     if zipfile.is_zipfile(archive):
@@ -116,7 +125,8 @@ def runtime():
         with urlopen(url,timeout=60) as source: (notices/f"yt-dlp-{name}").write_bytes(source.read())
     if windows:
         item=LOCK["windows_ffmpeg"]
-        archive=acquire(item["url"],"ffmpeg-windows.zip",item["sha256"]); unpack(archive,build/"ffmpeg")
+        expected=item.get("sha256") or published_sha256(item["checksums_url"],item["url"].rsplit("/",1)[-1])
+        archive=acquire(item["url"],f"ffmpeg-windows-{expected[:12]}.zip",expected); unpack(archive,build/"ffmpeg")
         for path in next((build/"ffmpeg").glob("*/bin")).iterdir():
             if path.is_file(): shutil.copy2(path,ROOT/"vendor/ffmpeg"/path.name)
         for path in (build/"ffmpeg").rglob("LICENSE*"):
